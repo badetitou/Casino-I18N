@@ -1,4 +1,6 @@
 "
+In properties file of format *myfile_fr*, the language is *fr* and the namespace is *myfile* as a root namespace
+
 Usage example:
 
 ```st
@@ -18,7 +20,8 @@ Class {
 	#instVars : [
 		'model',
 		'parser',
-		'currentLanguage'
+		'currentLanguage',
+		'currentNamespace'
 	],
 	#category : #'Casino-18N-Model-PropertyImporter'
 }
@@ -44,14 +47,21 @@ CS18NPropertiesImporter >> currentLanguage: anObject [
 { #category : #accessing }
 CS18NPropertiesImporter >> importFile: aFileReference [
 
-	| fileShortName |
+	| fileShortName namespaceName |
 	fileShortName := (aFileReference absolutePath basenameWithoutExtension substrings: '_') second.
+	namespaceName := (aFileReference absolutePath basenameWithoutExtension substrings: '_') first.
 	currentLanguage := (self model allWithType: CS18NLanguage)
 		                   detect: [ :language | language shortName = fileShortName ]
 		                   ifNone: [ 
 			                   (self createInModel: CS18NLanguage)
 				                   shortName: fileShortName;
 				                   yourself ].
+	currentNamespace := (self model allWithType: CS18NNamespace)
+		                    detect: [ :namespace | namespace name = namespaceName ]
+		                    ifNone: [ 
+			                    (self createInModel: CS18NNamespace)
+				                    name: namespaceName;
+				                    yourself ].
 	self importString: aFileReference contents
 ]
 
@@ -68,6 +78,7 @@ CS18NPropertiesImporter >> importString: aString [
 						 yourself) ]
 			ifNone: [ 
 				(self createInModel: CS18NEntry)
+					namespace: currentNamespace;
 					key: ((self createInModel: CS18NKey)
 							 name: keyValue key;
 							 yourself);

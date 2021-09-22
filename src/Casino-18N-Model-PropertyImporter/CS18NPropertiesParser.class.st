@@ -15,7 +15,7 @@ Class {
 { #category : #accessing }
 CS18NPropertiesParser >> comment [
 
-	^ ($# asPParser , (#letter asPParser / $# asPParser  / #digit asPParser / $- asPParser / $  asPParser) star) trim
+	^ ($# asPParser , newline negate star) trim
 ]
 
 { #category : #accessing }
@@ -47,7 +47,7 @@ CS18NPropertiesParser >> pairValue [
 { #category : #accessing }
 CS18NPropertiesParser >> pairs [
 
-	^ comment optional starLazy, pair , ((newline / comment) star , pair ==> [ :token | token second ]) star , newline star ==> [ :token | 
+	^ comment optional starLazy, pair , ((newline / comment) star , pair ==> [ :token | token second ]) star , (newline/comment) star ==> [ :token | 
 	  ((OrderedCollection with: token second)
 		   addAll: token third;
 		   yourself) asArray ]
