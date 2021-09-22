@@ -22,6 +22,19 @@ CS18NPropertiesParserTest >> setUp [
 ]
 
 { #category : #tests }
+CS18NPropertiesParserTest >> testPairValueParseDoubleQuote [
+
+	self assert: (parser pairValue parse: 'auj''d') equals: 'auj''d'.
+	self assert: (parser pairValue parse: 'Aujourd''hui') equals: 'Aujourd''hui'
+]
+
+{ #category : #tests }
+CS18NPropertiesParserTest >> testParseDoubleQuote [
+
+	self assert: (parser parse: 'recherchePeriodeAUJOURD_HUI=Aujourd''hui') equals: { 'recherchePeriodeAUJOURD_HUI' -> 'Aujourd''hui' }.
+]
+
+{ #category : #tests }
 CS18NPropertiesParserTest >> testParseTwoElement [
 	| result |
 	result :=  parser parse: 'bla=ble
