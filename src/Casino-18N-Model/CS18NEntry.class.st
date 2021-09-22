@@ -7,7 +7,6 @@ Class {
 	#traits : 'CS18Ncontainable',
 	#classTraits : 'CS18Ncontainable classTrait',
 	#instVars : [
-		'#name => FMProperty',
 		'#key => FMOne type: #CS18NKey opposite: #entry',
 		'#values => FMMany type: #CS18NValue opposite: #entry'
 	],
@@ -49,20 +48,6 @@ CS18NEntry >> keyGroup [
 	<generated>
 	<navigation: 'Key'>
 	^ MooseSpecializedGroup with: self key
-]
-
-{ #category : #accessing }
-CS18NEntry >> name [
-
-	<FMProperty: #name type: #String>
-	<generated>
-	^ name
-]
-
-{ #category : #accessing }
-CS18NEntry >> name: anObject [
-	<generated>
-	name := anObject
 ]
 
 { #category : #accessing }

@@ -5,7 +5,8 @@ Class {
 	#name : #CS18NKey,
 	#superclass : #CS18NEntity,
 	#instVars : [
-		'#entry => FMOne type: #CS18NEntry opposite: #key'
+		'#entry => FMOne type: #CS18NEntry opposite: #key',
+		'#name => FMProperty'
 	],
 	#category : #'Casino-18N-Model-Entities'
 }
@@ -41,4 +42,18 @@ CS18NKey >> entryGroup [
 	<generated>
 	<navigation: 'Entry'>
 	^ MooseSpecializedGroup with: self entry
+]
+
+{ #category : #accessing }
+CS18NKey >> name [
+
+	<FMProperty: #name type: #String>
+	<generated>
+	^ name
+]
+
+{ #category : #accessing }
+CS18NKey >> name: anObject [
+	<generated>
+	name := anObject
 ]

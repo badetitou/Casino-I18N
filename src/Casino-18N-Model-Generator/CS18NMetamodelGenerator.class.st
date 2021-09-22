@@ -47,7 +47,7 @@ CS18NMetamodelGenerator >> defineHierarchy [
 CS18NMetamodelGenerator >> defineProperties [
 	super defineProperties.
 	language property: #shortName type: #String.
-	entry property: #name type: #String.
+	key property: #name type: #String.
 	value property: #name type: #String.
 	namespace property: #name type: #String.
 ]
