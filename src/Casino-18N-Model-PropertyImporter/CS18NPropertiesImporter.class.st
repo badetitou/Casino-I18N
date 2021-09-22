@@ -59,15 +59,23 @@ CS18NPropertiesImporter >> importFile: aFileReference [
 CS18NPropertiesImporter >> importString: aString [
 
 	(parser parse: aString) do: [ :keyValue | 
-		(self createInModel: CS18NEntry)
-			key: ((self createInModel: CS18NKey)
-					 name: keyValue key;
-					 yourself);
-			addValue: ((self createInModel: CS18NValue)
-					 name: keyValue value;
-					 language: currentLanguage;
-					 yourself);
-			yourself ]
+		(self model allWithType: CS18NEntry) asOrderedCollection
+			detect: [ :entry | entry key name = keyValue key ]
+			ifOne: [ :entry | 
+				entry addValue: ((self createInModel: CS18NValue)
+						 name: keyValue value;
+						 language: currentLanguage;
+						 yourself) ]
+			ifNone: [ 
+				(self createInModel: CS18NEntry)
+					key: ((self createInModel: CS18NKey)
+							 name: keyValue key;
+							 yourself);
+					addValue: ((self createInModel: CS18NValue)
+							 name: keyValue value;
+							 language: currentLanguage;
+							 yourself);
+					yourself ] ]
 ]
 
 { #category : #accessing }
