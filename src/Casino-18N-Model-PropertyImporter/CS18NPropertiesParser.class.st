@@ -2,7 +2,6 @@ Class {
 	#name : #CS18NPropertiesParser,
 	#superclass : #PP2CompositeNode,
 	#instVars : [
-		'model',
 		'pairs',
 		'label',
 		'pairValue',
@@ -16,17 +15,12 @@ Class {
 { #category : #accessing }
 CS18NPropertiesParser >> comment [
 
-	^ ($# asPParser , (#letter asPParser / #digit asPParser / $- asPParser) trim) trim
+	^ ($# asPParser , (#letter asPParser / $# asPParser  / #digit asPParser / $- asPParser) trim star) trim
 ]
 
 { #category : #accessing }
 CS18NPropertiesParser >> label [
 	^ (#letter asPParser / #digit asPParser / $- asPParser) star flatten trim
-]
-
-{ #category : #accessing }
-CS18NPropertiesParser >> model [
-	^ model
 ]
 
 { #category : #accessing }
