@@ -28,4 +28,11 @@ BaselineOfCasino18N >> defineGroups: spec [
 
 { #category : #baselines }
 BaselineOfCasino18N >> definePackages: spec [
+
+	spec
+		package: 'Casino-18N-Model';
+		package: 'Casino-18N-Model-Generator';
+		package: 'Casino-18N-Model-PropertyExporter' with: [ spec requires: #( 'NeoJSON' ) ];
+		package: 'Casino-18N-Model-PropertyImporter' with: [ spec requires: #( 'PetitParser2' ) ];
+		package: 'Casino-18N-Model-PropertyImporter-Tests' with: [ spec requires: #( 'Casino-18N-Model-PropertyImporter' ) ]
 ]
