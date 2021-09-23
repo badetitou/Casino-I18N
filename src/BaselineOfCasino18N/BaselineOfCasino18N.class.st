@@ -17,10 +17,9 @@ BaselineOfCasino18N >> baseline: spec [
 
 { #category : #baselines }
 BaselineOfCasino18N >> defineDependencies: spec [
-	spec
-		baseline: 'PetitParser2'
-		with: [ spec
-				repository: 'github://kursjan/petitparser2' ].
+
+	spec baseline: 'PetitParser2' with: [ spec repository: 'github://kursjan/petitparser2' ].
+	spec baseline: 'NeoJSON' with: [ spec repository: 'github://svenvc/NeoJSON/repository' ]
 ]
 
 { #category : #baselines }
