@@ -4,6 +4,12 @@ Class {
 	#category : #'Casino-18N-Model-Model'
 }
 
+{ #category : #accessing }
+CS18NModel class >> allSubmetamodelsPackagesNames [
+	<generated>
+	^ #(#'Moose-Query')
+]
+
 { #category : #meta }
 CS18NModel class >> annotation [
 	<FMClass: #CS18NModel super: #MooseModel>

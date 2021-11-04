@@ -7,7 +7,8 @@ Class {
 		'key',
 		'value',
 		'namespace',
-		'containable'
+		'containable',
+		'entity'
 	],
 	#category : #'Casino-18N-Model-Generator'
 }
@@ -26,9 +27,15 @@ CS18NMetamodelGenerator class >> prefix [
 	^ #'CS18N'
 ]
 
+{ #category : #accessing }
+CS18NMetamodelGenerator class >> submetamodels [
+	^ { FamixMooseQueryGenerator }
+]
+
 { #category : #definition }
 CS18NMetamodelGenerator >> defineClasses [
 	super defineClasses.
+	entity := builder newClassNamed: 'Entity'.
 	language := builder newClassNamed: 'Language' comment: 'A language'.
 	entry := builder newClassNamed: 'Entry' comment: 'An i18n entry'.
 	key := builder newClassNamed: 'Key' comment: 'An i18n entry''s key'.
@@ -39,6 +46,7 @@ CS18NMetamodelGenerator >> defineClasses [
 { #category : #definition }
 CS18NMetamodelGenerator >> defineHierarchy [
 	super defineHierarchy.
+	entity --|> #TEntityMetaLevelDependency.
 	namespace --|> containable.
 	entry --|> containable.
 ]

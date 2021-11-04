@@ -1,6 +1,8 @@
 Class {
 	#name : #CS18NEntity,
 	#superclass : #MooseEntity,
+	#traits : 'TEntityMetaLevelDependency',
+	#classTraits : 'TEntityMetaLevelDependency classTrait',
 	#category : #'Casino-18N-Model-Entities'
 }
 
