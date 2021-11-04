@@ -21,7 +21,9 @@ CS18NPropertiesParser >> comment [
 { #category : #accessing }
 CS18NPropertiesParser >> label [
 
-	^ (#letter asPParser / #digit asPParser / $- asPParser / $_ asPParser / $[ asPParser / $] asPParser / '\=' asPParser) star flatten trim
+	^ (#letter asPParser / #digit asPParser / $- asPParser / $_ asPParser
+	   / $[ asPParser / $] asPParser / '\=' asPParser / $. asPParser)
+		  star flatten trim
 ]
 
 { #category : #accessing }

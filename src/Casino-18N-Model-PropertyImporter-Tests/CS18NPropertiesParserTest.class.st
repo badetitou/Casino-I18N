@@ -35,6 +35,12 @@ CS18NPropertiesParserTest >> testParseDoubleQuote [
 ]
 
 { #category : #tests }
+CS18NPropertiesParserTest >> testParseLabelWithDot [
+
+	self assert: (parser label parse: 'hello.world') equals: 'hello.world'.
+]
+
+{ #category : #tests }
 CS18NPropertiesParserTest >> testParseTwoElement [
 	| result |
 	result :=  parser parse: 'bla=ble
