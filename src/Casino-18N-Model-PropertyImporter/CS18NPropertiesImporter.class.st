@@ -69,7 +69,7 @@ CS18NPropertiesImporter >> importFile: aFileReference [
 CS18NPropertiesImporter >> importString: aString [
 
 	(parser parse: aString) do: [ :keyValue | 
-		(self model allWithType: CS18NEntry) asOrderedCollection
+		(currentNamespace toScope: CS18NEntry) asOrderedCollection
 			detect: [ :entry | entry key name = keyValue key ]
 			ifOne: [ :entry | 
 				entry addValue: ((self createInModel: CS18NValue)
