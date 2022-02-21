@@ -44,7 +44,7 @@ BaselineOfCasino18N >> defineGroups: spec [
 		group: 'casino'
 		with:
 			#( 'default' 'CasinoExtension-18N-Model'
-			   'CasinoExtension-18N-ModelExporter'
+			   'CasinoExtension-18N-Model-Exporter'
 			   'CasinoExtension-18N-Model-Generator'
 			   'CasinoExtension-18N-ModelTransformation' )
 ]
