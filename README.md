@@ -92,7 +92,7 @@ example:
 
 ```
 
-## Casino developers
+## Casino developers (export to Angular)
 
 This project comes with an integration to the Casino project to automatize the migration of I18N attributes.
 
@@ -108,4 +108,33 @@ Metacello new
   onUpgrade: [ :ex | ex useIncoming ];
   onDowngrade: [ :ex | ex useLoaded ];
   load: 'casino'
+```
+
+### Usage
+
+Once a I18N model is extracted, one can convert a Casino model with the `CSNE18NModelTransformation` util.
+
+```st
+"Add information to Casino model"
+CSNE18NModelTransformation new
+  csnModel: gwtModel;
+  i18nModel: i18nModel;
+  bind.
+```
+
+Then, it is possible to use the `CSE18NExporterAngularAttribute` instead of the `CSNExporterAngularAttribute` to export the i18n key inside the Angular HTML code.
+
+> Some adaptation of the code might be required.
+
+For the `CSNModelExporterAngularBLIdentity` of [Berger-Levrault](https://www.berger-levrault.com):
+
+```st
+"Create an exporter"
+exporter := CSNModelExporterAngularBLIdentity new.
+exporter identityConfiguration: configXML.
+"Here set another attribute exporter"
+exporter attributeExporter: CSE18NExporterAngularAttribute new.
+"Use the material.angular.io as target library"
+exporter exporterAngularConfiguration: CSNExporterAngularMaterialConfiguration new.
+exporter model: gwtModel.
 ```
