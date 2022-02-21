@@ -18,8 +18,16 @@ BaselineOfCasino18N >> baseline: spec [
 { #category : #baselines }
 BaselineOfCasino18N >> defineDependencies: spec [
 
-	spec baseline: 'PetitParser2' with: [ spec repository: 'github://kursjan/petitparser2' ].
-	spec baseline: 'NeoJSON' with: [ spec repository: 'github://svenvc/NeoJSON/repository' ]
+	spec
+		baseline: 'PetitParser2'
+		with: [ spec repository: 'github://kursjan/petitparser2' ].
+	spec
+		baseline: 'NeoJSON'
+		with: [ spec repository: 'github://svenvc/NeoJSON/repository' ].
+	spec baseline: 'Casino' with: [ 
+		spec
+			loads: 'behavior-bl';
+			repository: 'github://badetitou/Casino:v2/src' ]
 ]
 
 { #category : #baselines }
@@ -30,7 +38,15 @@ BaselineOfCasino18N >> defineGroups: spec [
 		with: #( 'Casino-18N-Model' 'Casino-18N-Model-Generator'
 			   'Casino-18N-Model-PropertyExporter'
 			   'Casino-18N-Model-PropertyImporter'
-			   'Casino-18N-Model-PropertyImporter-Tests' )
+			   'Casino-18N-Model-PropertyImporter-Tests'
+			   'Casino-18N-Model-Tests' ).
+	spec
+		group: 'casino'
+		with:
+			#( 'default' 'CasinoExtension-18N-Model'
+			   'CasinoExtension-18N-ModelExporter'
+			   'CasinoExtension-18N-Model-Generator'
+			   'CasinoExtension-18N-ModelTransformation' )
 ]
 
 { #category : #baselines }
@@ -40,6 +56,8 @@ BaselineOfCasino18N >> definePackages: spec [
 
 	spec
 		package: 'Casino-18N-Model';
+		package: 'Casino-18N-Model-Extension' with: [ spec requires: #( 'Casino-18N-Model' ) ];
+		package: 'Casino-18N-Model-Tests' with: [ spec requires: #( 'Casino-18N-Model-Extension' ) ];
 		package: 'Casino-18N-Model-Generator';
 		package: 'Casino-18N-Model-PropertyExporter'
 		with: [ spec requires: #( 'NeoJSON' ) ];
