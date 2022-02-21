@@ -68,6 +68,7 @@ BaselineOfCasino18N >> definePackages: spec [
 	"Link with the main Casino Project"
 	spec
 		package: 'CasinoExtension-18N-Model';
+		package: 'CasinoExtension-18N-Model-Exporter';
 		package: 'CasinoExtension-18N-Model-Generator';
 		package: 'CasinoExtension-18N-ModelTransformation'
 ]
