@@ -50,7 +50,7 @@ CS18NPropertiesParser >> pairValue [
 { #category : #accessing }
 CS18NPropertiesParser >> pairs [
 
-	^ ((newline / comment) star , pair ==> [ :token | token second ]) plus , (newline/comment) star ==> [ :token | 
+	^ ((newline / comment) star , pair ==> [ :token | token second ]) star , (newline/comment) star ==> [ :token | 
 	  ((OrderedCollection withAll: token first)
 		   yourself) asArray ]
 ]

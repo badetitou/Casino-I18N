@@ -35,9 +35,25 @@ CS18NPropertiesParserTest >> testParseDoubleQuote [
 ]
 
 { #category : #tests }
+CS18NPropertiesParserTest >> testParseEmpty [
+	| result |
+	result := parser parse: ''.
+	self assert: result isPetit2Success.
+]
+
+{ #category : #tests }
 CS18NPropertiesParserTest >> testParseLabelWithDot [
 
 	self assert: (parser label parse: 'hello.world') equals: 'hello.world'.
+]
+
+{ #category : #tests }
+CS18NPropertiesParserTest >> testParseOnlyComments [
+	| result |
+	result := parser parse: '
+#bla
+#bla'.
+	self assert: result isPetit2Success.
 ]
 
 { #category : #tests }
