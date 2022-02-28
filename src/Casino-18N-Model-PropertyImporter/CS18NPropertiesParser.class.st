@@ -35,7 +35,7 @@ CS18NPropertiesParser >> newline [
 { #category : #accessing }
 CS18NPropertiesParser >> pair [
 
-	^ label , $= asPParser token trim , pairValue ==> [ :token | (token at: 1) -> (token at: 3) ]
+	^ label , $= asPParser token trimBlanks , pairValue ==> [ :token | (token at: 1) -> (token at: 3) ]
 ]
 
 { #category : #accessing }

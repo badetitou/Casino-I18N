@@ -42,6 +42,15 @@ CS18NPropertiesParserTest >> testParseEmpty [
 ]
 
 { #category : #tests }
+CS18NPropertiesParserTest >> testParseEmptyValue [
+	| result |
+	result := parser parse: '
+bla=
+ble=bla'.
+	self assert: result size equals: 2.
+]
+
+{ #category : #tests }
 CS18NPropertiesParserTest >> testParseLabelWithDot [
 
 	self assert: (parser label parse: 'hello.world') equals: 'hello.world'.
