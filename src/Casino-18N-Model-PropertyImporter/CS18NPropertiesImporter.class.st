@@ -45,6 +45,18 @@ CS18NPropertiesImporter >> currentLanguage: anObject [
 ]
 
 { #category : #accessing }
+CS18NPropertiesImporter >> currentNamespace [
+
+	^ currentNamespace
+]
+
+{ #category : #accessing }
+CS18NPropertiesImporter >> currentNamespace: aNamespace [
+
+	currentNamespace := aNamespace
+]
+
+{ #category : #accessing }
 CS18NPropertiesImporter >> importFile: aFileReference [
 
 	| fileShortName namespaceName |
