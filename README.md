@@ -1,5 +1,8 @@
 # Casino-I18N
 
+[![CI](https://github.com/badetitou/Casino-I18N/actions/workflows/test.yml/badge.svg)](https://github.com/badetitou/Casino-I18N/actions/workflows/test.yml)
+[![Coverage Status](https://coveralls.io/repos/github/badetitou/Casino-I18N/badge.svg?branch=master)](https://coveralls.io/github/badetitou/Casino-I18N?branch=master)
+
 This project aims to ease the migration of I18N properties files to one I18N json files.
 
 The input looks like:
