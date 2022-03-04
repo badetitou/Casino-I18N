@@ -61,21 +61,8 @@ CS18NPropertiesImporter >> currentNamespace: aNamespace [
 { #category : #accessing }
 CS18NPropertiesImporter >> importFile: aFileReference [
 
-	| fileShortName namespaceName |
-	fileShortName := (aFileReference absolutePath basenameWithoutExtension substrings: '_') second.
-	namespaceName := (aFileReference absolutePath basenameWithoutExtension substrings: '_') first.
-	currentLanguage := (self model allWithType: CS18NLanguage)
-		                   detect: [ :language | language shortName = fileShortName ]
-		                   ifNone: [ 
-			                   (self createInModel: CS18NLanguage)
-				                   shortName: fileShortName;
-				                   yourself ].
-	currentNamespace := (self model allWithType: CS18NNamespace)
-		                    detect: [ :namespace | namespace name = namespaceName ]
-		                    ifNone: [ 
-			                    (self createInModel: CS18NNamespace)
-				                    name: namespaceName;
-				                    yourself ].
+	currentLanguage := languageStrategy languageForFile: aFileReference.
+	currentNamespace := namespaceStrategy namespaceForFile: aFileReference.
 	self importString: aFileReference contents
 ]
 
@@ -96,6 +83,15 @@ CS18NPropertiesImporter >> initialize [
 ]
 
 { #category : #accessing }
+CS18NPropertiesImporter >> languageStrategy: aLanguageStrategy [
+
+	"I take a strategy to define languages and link with it."
+
+	languageStrategy := aLanguageStrategy.
+	languageStrategy model: model
+]
+
+{ #category : #accessing }
 CS18NPropertiesImporter >> model [
 
 	^ model
@@ -105,4 +101,13 @@ CS18NPropertiesImporter >> model [
 CS18NPropertiesImporter >> model: anObject [
 
 	model := anObject
+]
+
+{ #category : #accessing }
+CS18NPropertiesImporter >> namespaceStrategy: aNamespaceStrategy [
+
+	"I take a strategy to define toplevel namespaces and link with it."
+
+	namespaceStrategy := aNamespaceStrategy.
+	namespaceStrategy model: model
 ]
