@@ -73,6 +73,32 @@ CS18NStrategyTest >> testFilePathNamespaceStrategy [
 ]
 
 { #category : #tests }
+CS18NStrategyTest >> testLiteralEntryStrategy [
+
+	| strategy entry |
+	strategy := CS18NLiteralEntryStrategy new.
+	importer
+		entryStrategy: strategy;
+		currentNamespace: CS18NNamespace new.
+	entry := strategy entryForKey: 'foo.bar'.
+	self assert: entry key name equals: 'foo.bar'
+]
+
+{ #category : #tests }
+CS18NStrategyTest >> testNestedEntryStrategy [
+
+	| strategy entry |
+	strategy := CS18NNestedEntryStrategy new.
+	importer
+		entryStrategy: strategy;
+		currentNamespace: (importer model ensureNamespace: 'root').
+	entry := strategy entryForKey: 'foo.bar'.
+	self assert: entry key name equals: 'bar'.
+	self assert: entry namespace name equals: 'foo'.
+	self assert: entry namespace namespace name equals: 'root'
+]
+
+{ #category : #tests }
 CS18NStrategyTest >> testStaticLanguageStrategy [
 
 	| strategy lang |

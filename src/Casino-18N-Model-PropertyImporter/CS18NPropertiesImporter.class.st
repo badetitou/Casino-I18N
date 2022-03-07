@@ -60,6 +60,15 @@ CS18NPropertiesImporter >> currentNamespace: aNamespace [
 ]
 
 { #category : #accessing }
+CS18NPropertiesImporter >> entryStrategy: anEntryStrategy [
+
+	"I take a strategy to define entries and link with it."
+
+	entryStrategy := anEntryStrategy.
+entryStrategy importer: self
+]
+
+{ #category : #accessing }
 CS18NPropertiesImporter >> importFile: aFileReference [
 
 	currentLanguage := languageStrategy languageForFile: aFileReference.
@@ -71,8 +80,8 @@ CS18NPropertiesImporter >> importFile: aFileReference [
 CS18NPropertiesImporter >> importString: aString [
 
 	(parser parse: aString) do: [ :keyValue | 
-		(model entryForPath: keyValue key from: currentNamespace) addValue:
-			((self createInModel: CS18NValue)
+		(entryStrategy entryForKey: keyValue key) addValue:
+			(CS18NValue new
 				 name: keyValue value;
 				 language: currentLanguage) ]
 ]
