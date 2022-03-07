@@ -3,7 +3,9 @@ I use the path of a file to create or retrieve a toplevel namespace in a model.
 
 ```
 CS18NPropertiesImporter new namespaceStrategy:
-	CS18NFileNameNamespaceStrategy new.
+	(CS18NFilePathNamespaceStrategy new
+		addPathIndex: 3;
+		addPathIndex: 1).
 ```
 "
 Class {
@@ -22,10 +24,7 @@ CS18NFilePathNamespaceStrategy >> addPathIndex: anIndex [
 	The index is relative to the leaf file, which has an index of 1.
 	A namespace will be created or retrieved for each one.
 	The order in which I am called matters to the resulting namespace hierarchy.
-	Set(3 1) with the path 'my/awesome/path/file' results in the namespaces 'awesome.file'
-	
-	self addPathIndex: 3; addPathIndex: 1. >>> nil
-	self namespaceForFile: 'my/awesome/path/file' asFileReference. >>> "
+	Indexes (3 1) with path 'my/awesome/path/file' results in the namespaces 'awesome.file'"
 
 	pathIndexes add: anIndex
 ]
@@ -33,17 +32,17 @@ CS18NFilePathNamespaceStrategy >> addPathIndex: anIndex [
 { #category : #initialization }
 CS18NFilePathNamespaceStrategy >> initialize [
 
-	pathIndexes := Set new.
+	pathIndexes := Set new
 ]
 
 { #category : #strategy }
 CS18NFilePathNamespaceStrategy >> namespaceForFile: aFileReference [
 
-	| segments namePath |
+	| segments |
 	segments := aFileReference absolutePath segments reversed.
-	namePath := pathIndexes collect: [ :i | 
+	segments := pathIndexes collect: [ :i | 
 		            i = 1
-			            ifTrue: [ (segments at: 1) copyUpToLast: $. ]
+			            ifTrue: [ aFileReference basenameWithoutExtension ]
 			            ifFalse: [ segments at: i ] ].
-	^ model namespaceForPath: ('.' join: namePath)
+	^ importer model namespaceForPath: ('.' join: segments)
 ]

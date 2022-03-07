@@ -58,7 +58,8 @@ CS18NNamespace >> ensureEntry: aKeyName [
 
 	^ self containables
 		  detect: [ :containable | 
-			containable class == CS18NEntry and: [ containable key name = aKeyName ] ]
+			  containable class == CS18NEntry and: [ 
+				  containable key name = aKeyName ] ]
 		  ifNone: [ 
 			  self addContainable:
 				  (CS18NEntry new key: (CS18NKey new name: aKeyName)) ]

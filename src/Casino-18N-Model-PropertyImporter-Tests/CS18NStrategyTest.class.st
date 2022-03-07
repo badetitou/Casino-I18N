@@ -2,15 +2,59 @@ Class {
 	#name : #CS18NStrategyTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'model'
+		'importer'
 	],
 	#category : #'Casino-18N-Model-PropertyImporter-Tests'
 }
 
-{ #category : #initialization }
+{ #category : #running }
 CS18NStrategyTest >> setUp [
 
-	model := CS18NModel new
+	super setUp.
+	importer := CS18NPropertiesImporter new model: CS18NModel new
+]
+
+{ #category : #tests }
+CS18NStrategyTest >> testFileNameLanguageStrategy [
+
+	| strategy lang |
+	strategy := CS18NFileNameLanguageStrategy new importer: importer.
+	lang := strategy languageForFile: 'fr.properties' asFileReference.
+	self assert: lang shortName equals: 'fr'
+]
+
+{ #category : #tests }
+CS18NStrategyTest >> testFileNameNamespaceStrategy [
+
+	| strategy namespace |
+	strategy := CS18NFileNameNamespaceStrategy new.
+	importer namespaceStrategy: strategy.
+	namespace := strategy namespaceForFile:
+		             'foo.properties' asFileReference.
+	self assert: namespace name equals: 'foo'.
+	self assert: namespace namespace isNil
+]
+
+{ #category : #tests }
+CS18NStrategyTest >> testFileNamePrefixNamespaceStrategy [
+
+	| strategy namespace |
+	strategy := CS18NFileNamePrefixNamespaceStrategy new separator: $_.
+	importer namespaceStrategy: strategy.
+	namespace := strategy namespaceForFile:
+		             'foo_fr.properties' asFileReference.
+	self assert: namespace name equals: 'foo'.
+	self assert: namespace namespace isNil
+]
+
+{ #category : #tests }
+CS18NStrategyTest >> testFileNameSuffixLanguageStrategy [
+
+	| strategy lang |
+	strategy := CS18NFileNameSuffixLanguageStrategy new separator: $_.
+	importer languageStrategy: strategy.
+	lang := strategy languageForFile: 'foo_fr.properties' asFileReference.
+	self assert: lang shortName equals: 'fr'
 ]
 
 { #category : #tests }
@@ -19,60 +63,21 @@ CS18NStrategyTest >> testFilePathNamespaceStrategy [
 	| strategy namespace |
 	strategy := CS18NFilePathNamespaceStrategy new
 		            addPathIndex: 3;
-		            addPathIndex: 1;
-		            model: model.
+		            addPathIndex: 1.
+	importer namespaceStrategy: strategy.
 	namespace := strategy namespaceForFile:
 		             'my/awesome/test/foo.properties' asFileReference.
-	self
-		assert: namespace name equals: 'foo'. self
-		assert: namespace namespace name equals: 'awesome'. self
-		assert: namespace namespace namespace isNil
-]
-
-{ #category : #tests }
-CS18NStrategyTest >> testFilenameNamespaceStrategy [
-
-	| strategy namespace |
-	strategy := CS18NFileNameNamespaceStrategy new model: model.
-	namespace := strategy namespaceForFile:
-		             'foo.properties' asFileReference.
-	self
-		assert: namespace name equals: 'foo'. self
-		assert: namespace namespace isNil
-]
-
-{ #category : #tests }
-CS18NStrategyTest >> testFilenamePrefixNamespaceStrategy [
-
-	| strategy namespace |
-	strategy := CS18NFileNamePrefixNamespaceStrategy new
-		            separator: $_;
-		            model: model.
-	namespace := strategy namespaceForFile:
-		             'foo_fr.properties' asFileReference.
-	self
-		assert: namespace name equals: 'foo'. self
-		assert: namespace namespace isNil
-]
-
-{ #category : #tests }
-CS18NStrategyTest >> testFilenameSuffixLanguageStrategy [
-
-	| strategy lang |
-	strategy := CS18NFileNameSuffixLanguageStrategy new
-		            separator: $_;
-				            model: model.
-	lang := strategy languageForFile: 'foo_fr.properties' asFileReference.
-	self assert: lang shortName equals: 'fr'
+	self assert: namespace name equals: 'foo'.
+	self assert: namespace namespace name equals: 'awesome'.
+	self assert: namespace namespace namespace isNil
 ]
 
 { #category : #tests }
 CS18NStrategyTest >> testStaticLanguageStrategy [
 
 	| strategy lang |
-	strategy := CS18NStaticLanguageStrategy new
-		            language: 'fr';
-			model: model.
+	strategy := CS18NStaticLanguageStrategy new language: 'fr'.
+	importer languageStrategy: strategy.
 	lang := strategy languageForFile: 'foo.properties' asFileReference.
 	self assert: lang shortName equals: 'fr'
 ]
@@ -81,12 +86,10 @@ CS18NStrategyTest >> testStaticLanguageStrategy [
 CS18NStrategyTest >> testStaticNamespaceStrategy [
 
 	| strategy namespace |
-	strategy := CS18NStaticNamespaceStrategy new
-		            namespace: 'root';
-		            model: model.
+	strategy := CS18NStaticNamespaceStrategy new namespace: 'root'.
+	importer namespaceStrategy: strategy.
 	namespace := strategy namespaceForFile:
 		             'foo.properties' asFileReference.
-	self
-		assert: namespace name equals: 'root'. self
-		assert: namespace namespace isNil
+	self assert: namespace name equals: 'root'.
+	self assert: namespace namespace isNil
 ]

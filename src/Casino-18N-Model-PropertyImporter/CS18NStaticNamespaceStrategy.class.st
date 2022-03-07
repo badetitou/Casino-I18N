@@ -3,7 +3,6 @@ I have to be told once beforehand with `#namespace:` the name of which `CS18NNam
 
 ```
 CS18NPropertiesImporter new
-	model: CS18NModel new; ""a model must be provided before me""
 	namespaceStrategy: (CS18NStaticNamespaceStrategy new namespace: 'root').
 ```
 "
@@ -17,27 +16,17 @@ Class {
 }
 
 { #category : #accessing }
-CS18NStaticNamespaceStrategy >> model: aModel [
-
-	"I must only be called by CS18NPropertiesImporter."
-
-	super model: aModel.
-	model add: namespace
-]
-
-{ #category : #accessing }
 CS18NStaticNamespaceStrategy >> namespace: aNamespaceName [
 
-	"I take a name with which I will create an instance of CS18NNamespace in a model when linked to an importer.
-	I will answer this instance whenever #namespaceForFile: is called."
+	"I take a name for which I will answer an instance of CS18NNamespace whenever #namespaceForFile: is received."
 
-	namespace := CS18NNamespace new name: aNamespaceName
+	namespace := aNamespaceName
 ]
 
 { #category : #strategy }
 CS18NStaticNamespaceStrategy >> namespaceForFile: aFileReference [
 
-	"I always answer the namespace that I was told with #namespace:"
+	"I always answer the namespace that was received by #namespace:"
 
-	^ namespace
+	^ importer model ensureNamespace: namespace
 ]

@@ -1,5 +1,5 @@
 "
-I represent a strategy to create or retrieve a toplevel namespace in a model.
+I represent a strategy to create or retrieve a toplevel `CS18NNamespace` in a model.
 One of my subclasses has to be initialized and then linked to an instance of `CS18NPropertiesImporter`.
 "
 Class {

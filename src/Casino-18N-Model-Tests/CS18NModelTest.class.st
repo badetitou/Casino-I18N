@@ -46,7 +46,7 @@ CS18NModelTest >> testEnsureNamespace [
 	thirdNamespace := model ensureNamespace: 'bar'.
 	self assert: firstNamespace equals: secondNamespace.
 	self deny: firstNamespace equals: thirdNamespace.
-	self deny: secondNamespace equals: thirdNamespace.
+	self deny: secondNamespace equals: thirdNamespace
 ]
 
 { #category : #tests }
@@ -68,10 +68,9 @@ CS18NModelTest >> testEntryForPath [
 
 	"repeating names"
 	anEntry := model entryForPath: 'foo.foo'.
-	self
-		assert: anEntry key name equals: 'foo'. self
-		assert: anEntry namespace name equals: 'foo'. self
-		assert: anEntry namespace namespace isNil.
+	self assert: anEntry key name equals: 'foo'.
+	self assert: anEntry namespace name equals: 'foo'.
+	self assert: anEntry namespace namespace isNil.
 
 	anEntry := model entryForPath: 'foo.foo.foo'.
 	self assert: anEntry key name equals: 'foo'.

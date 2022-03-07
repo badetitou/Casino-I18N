@@ -6,15 +6,15 @@ Class {
 	#name : #CS18NAbstractStrategy,
 	#superclass : #Object,
 	#instVars : [
-		'model'
+		'importer'
 	],
 	#category : #'Casino-18N-Model-PropertyImporter'
 }
 
 { #category : #'private - accessing' }
-CS18NAbstractStrategy >> model: aModel [
+CS18NAbstractStrategy >> importer: anImporter [
 
 	"I must only be called by CS18NPropertiesImporter."
 
-	model := aModel
+	importer := anImporter
 ]

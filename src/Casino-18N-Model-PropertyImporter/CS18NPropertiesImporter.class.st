@@ -23,7 +23,8 @@ Class {
 		'currentLanguage',
 		'currentNamespace',
 		'namespaceStrategy',
-		'languageStrategy'
+		'languageStrategy',
+		'entryStrategy'
 	],
 	#category : #'Casino-18N-Model-PropertyImporter'
 }
@@ -88,7 +89,7 @@ CS18NPropertiesImporter >> languageStrategy: aLanguageStrategy [
 	"I take a strategy to define languages and link with it."
 
 	languageStrategy := aLanguageStrategy.
-	languageStrategy model: model
+	languageStrategy importer: self
 ]
 
 { #category : #accessing }
@@ -109,5 +110,5 @@ CS18NPropertiesImporter >> namespaceStrategy: aNamespaceStrategy [
 	"I take a strategy to define toplevel namespaces and link with it."
 
 	namespaceStrategy := aNamespaceStrategy.
-	namespaceStrategy model: model
+	namespaceStrategy importer: self
 ]

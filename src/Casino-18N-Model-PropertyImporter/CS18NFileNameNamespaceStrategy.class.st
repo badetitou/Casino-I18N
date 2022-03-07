@@ -18,5 +18,6 @@ CS18NFileNameNamespaceStrategy >> namespaceForFile: aFileReference [
 	"I extract a namespace from the given file's name.
 	For a file named 'foo_fr.properties' I will answer a CS18NNamespace named 'foo_fr'."
 
-	^ model ensureNamespace: (aFileReference basenameWithoutExtension)
+	^ importer model ensureNamespace:
+		  aFileReference basenameWithoutExtension
 ]

@@ -9,12 +9,16 @@ Class {
 
 { #category : #test }
 CS18NEntryTest >> testCompleteName [
+
 	| namespace entry key |
-	namespace := CS18NNamespace new name: 'Hello'; yourself.
+	namespace := CS18NNamespace new
+		             name: 'Hello';
+		             yourself.
 	entry := CS18NEntry new.
-	key := CS18NKey new name: 'world'; yourself.
+	key := CS18NKey new
+		       name: 'world';
+		       yourself.
 	entry key: key.
 	namespace addContainable: entry.
-	self assert: entry completeName equals: 'Hello.world' 
-	
+	self assert: entry completeName equals: 'Hello.world'
 ]

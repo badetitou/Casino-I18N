@@ -1,8 +1,8 @@
 "
-I define a separator used to split a file's name.
+I define a separator used to split names.
 "
 Trait {
-	#name : #CS18NFilenameSeparator,
+	#name : #CS18NNameSeparator,
 	#instVars : [
 		'separator'
 	],
@@ -10,7 +10,7 @@ Trait {
 }
 
 { #category : #accessing }
-CS18NFilenameSeparator >> separator: aSeparatorCharacter [
+CS18NNameSeparator >> separator: aSeparatorCharacter [
 
 	"I take a character that is used to split a file's name."
 
