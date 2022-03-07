@@ -54,7 +54,7 @@ CS18NModelTest >> testEntryForPath [
 
 	"The method #entryForPath: uses #entryForPath:from: and #namespaceForPath:from:"
 
-	| anEntry  |
+	| anEntry |
 	"only key"
 	anEntry := model entryForPath: 'foo'.
 	self assert: anEntry key name equals: 'foo'.
@@ -66,13 +66,38 @@ CS18NModelTest >> testEntryForPath [
 	self assert: anEntry namespace name equals: 'foo'.
 	self assert: anEntry namespace namespace isNil.
 
-	"repeating name"
+	"repeating names"
 	anEntry := model entryForPath: 'foo.foo'.
+	self
+		assert: anEntry key name equals: 'foo'. self
+		assert: anEntry namespace name equals: 'foo'. self
+		assert: anEntry namespace namespace isNil.
+
+	anEntry := model entryForPath: 'foo.foo.foo'.
 	self assert: anEntry key name equals: 'foo'.
 	self assert: anEntry namespace name equals: 'foo'.
-	self assert: anEntry namespace namespace isNil.
+	self assert: anEntry namespace namespace name equals: 'foo'.
+	self assert: anEntry namespace namespace namespace isNil.
 
 	"retrieve namespace"
-	anEntry := model entryForPath: 'foo.bar'.
-	self assert: anEntry namespace equals: (model entryForPath: 'foo.baz') namespace
+	self
+		assert: (model entryForPath: 'foo.bar') namespace
+		equals: (model entryForPath: 'foo.baz') namespace.
+
+	"empty path"
+	self assert: (model entryForPath: '') key name equals: ''.
+
+	"weird paths"
+	anEntry := model entryForPath: 'foo.'.
+	self assert: anEntry key name equals: ''.
+	self assert: anEntry namespace name equals: 'foo'.
+
+	anEntry := model entryForPath: '.foo'.
+	self assert: anEntry key name equals: 'foo'.
+	self assert: anEntry namespace name equals: ''.
+
+	anEntry := model entryForPath: 'foo..bar'.
+	self assert: anEntry key name equals: 'bar'.
+	self assert: anEntry namespace name equals: ''.
+	self assert: anEntry namespace namespace name equals: 'foo'
 ]

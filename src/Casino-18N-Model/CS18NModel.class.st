@@ -144,26 +144,26 @@ CS18NModel >> namespaceForPath: aQualifiedName from: parentNamespace [
 
 	"This method could be in CS18NNamespace but it's kept here for keeping track of conflicts."
 
-	^ aQualifiedName isEmpty
-		  ifTrue: [ parentNamespace ]
-		  ifFalse: [ 
-			  | namespaceName |
-			  namespaceName := aQualifiedName copyUpTo: $..
-			  "check for conflict with any entry's key"
-			  (nameConflicts includes: ('.' join: { 
-						    parentNamespace completeName.
-						    namespaceName })) ifFalse: [ 
-				  parentNamespace containables
-					  detect: [ :containable | 
-						  containable class == CS18NEntry and: [ 
-							  containable key name = namespaceName ] ]
-					  ifOne: [ :entry | 
-						  ('' join: { 
-								   'Conflicting key and namespace: '''.
-								   entry completeName.
-								   $' }) record.
-						  nameConflicts add: entry completeName ] ].
-			  "end of conflict check"
+	| namespaceName |
+	namespaceName := aQualifiedName copyUpTo: $..
+	"check for conflict with any entry's key"
+	(nameConflicts includes: ('.' join: { 
+				  parentNamespace completeName.
+				  namespaceName })) ifFalse: [ 
+		parentNamespace containables
+			detect: [ :containable | 
+				containable class == CS18NEntry and: [ 
+					containable key name = namespaceName ] ]
+			ifOne: [ :entry | 
+				('' join: { 
+						 'Conflicting key and namespace: '''.
+						 entry completeName.
+						 $' }) record.
+				nameConflicts add: entry completeName ] ].
+	"end of conflict check"
+	^ (aQualifiedName includes: $.)
+		  ifFalse: [ parentNamespace ensureSubNamespace: namespaceName ]
+		  ifTrue: [ 
 			  self
 				  namespaceForPath: (aQualifiedName copyAfter: $.)
 				  from: (parentNamespace ensureSubNamespace: namespaceName) ]
