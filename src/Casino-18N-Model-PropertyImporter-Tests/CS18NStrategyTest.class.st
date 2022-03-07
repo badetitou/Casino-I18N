@@ -99,6 +99,51 @@ CS18NStrategyTest >> testNestedEntryStrategy [
 ]
 
 { #category : #tests }
+CS18NStrategyTest >> testPluggableEntryStrategy [
+
+	| strategy entry |
+	importer currentNamespace: (importer model ensureNamespace: 'root').
+	strategy := CS18NPluggableEntryStrategy new
+		            importer: importer;
+		            block: [ :key | 
+			            importer currentNamespace ensureEntry:
+					            (key copyAfterLast: $.) ].
+	entry := strategy entryForKey: 'foo.bar'.
+	self assert: entry key name equals: 'bar'.
+	self assert: entry namespace name equals: 'root'
+]
+
+{ #category : #tests }
+CS18NStrategyTest >> testPluggableLanguageStrategy [
+
+	| strategy lang |
+	importer currentNamespace: (importer model ensureNamespace: 'root').
+	strategy := CS18NPluggableLanguageStrategy new
+		            importer: importer;
+		            block: [ :file | 
+			            importer model ensureLanguage:
+					            (file basenameWithoutExtension copyUpTo: $-) ].
+	lang := strategy languageForFile: 'fr-foo.properties' asFileReference.
+	self assert: lang shortName equals: 'fr'
+]
+
+{ #category : #tests }
+CS18NStrategyTest >> testPluggableNamespaceStrategy [
+
+	| strategy namespace |
+	importer currentNamespace: (importer model ensureNamespace: 'root').
+	strategy := CS18NPluggableNamespaceStrategy new
+		            importer: importer;
+		            block: [ :file | 
+			            importer currentNamespace ensureSubNamespace:
+					            (file basenameWithoutExtension copyAfter: $-) ].
+	namespace := strategy namespaceForFile:
+		             'fr-foo.properties' asFileReference.
+	self assert: namespace name equals: 'foo'.
+	self assert: namespace namespace name equals: 'root'
+]
+
+{ #category : #tests }
 CS18NStrategyTest >> testStaticLanguageStrategy [
 
 	| strategy lang |
