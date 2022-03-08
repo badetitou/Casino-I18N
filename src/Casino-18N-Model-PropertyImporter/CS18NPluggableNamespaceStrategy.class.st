@@ -1,5 +1,5 @@
 "
-I use a user-defined block to create or retrieve a namespace in a model.
+I use a user-defined block to create or retrieve a namespace.
 
 ```
 CS18NPropertiesImporter new entryStrategy:

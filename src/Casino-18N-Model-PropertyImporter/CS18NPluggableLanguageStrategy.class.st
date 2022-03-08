@@ -1,5 +1,5 @@
 "
-I use a user-defined block to create or retrieve a language in a model.
+I use a user-defined block to create or retrieve a language.
 
 ```
 CS18NPropertiesImporter new entryStrategy:

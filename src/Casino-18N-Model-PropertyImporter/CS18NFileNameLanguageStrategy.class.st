@@ -1,5 +1,5 @@
 "
-I use the name of a file to create or retrieve a language in a model.
+I use the name of a file to create or retrieve a language in the importer's model.
 
 ```
 CS18NPropertiesImporter new languageStrategy:

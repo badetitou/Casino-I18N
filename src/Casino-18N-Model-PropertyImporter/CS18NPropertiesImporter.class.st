@@ -24,7 +24,8 @@ Class {
 		'currentNamespace',
 		'namespaceStrategy',
 		'languageStrategy',
-		'entryStrategy'
+		'entryStrategy',
+		'logger'
 	],
 	#category : #'Casino-18N-Model-PropertyImporter'
 }
@@ -65,7 +66,7 @@ CS18NPropertiesImporter >> entryStrategy: anEntryStrategy [
 	"I take a strategy to define entries and link with it."
 
 	entryStrategy := anEntryStrategy.
-entryStrategy importer: self
+	entryStrategy importer: self
 ]
 
 { #category : #accessing }
@@ -80,14 +81,14 @@ CS18NPropertiesImporter >> importFile: aFileReference [
 CS18NPropertiesImporter >> importString: aString [
 
 	(parser parse: aString) do: [ :keyValue | 
-		(entryStrategy entryForKey: keyValue key) addValue:
-			(CS18NValue new
+		(entryStrategy entryForKey: keyValue key) addValue: (CS18NValue new
 				 name: keyValue value;
 				 language: currentLanguage) ]
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 CS18NPropertiesImporter >> initialize [
+
 	super initialize.
 	parser := CS18NPropertiesParser new
 ]

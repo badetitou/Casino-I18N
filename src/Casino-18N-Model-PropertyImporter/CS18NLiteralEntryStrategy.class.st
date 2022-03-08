@@ -1,5 +1,5 @@
 "
-I use a key as a literal to create or retrieve an entry in a model.
+I use a key as a literal to create or retrieve an entry in the importer's current namespace.
 
 ```
 CS18NPropertiesImporter new entryStrategy:

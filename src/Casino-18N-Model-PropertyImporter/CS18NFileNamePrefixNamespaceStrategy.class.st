@@ -1,5 +1,5 @@
 "
-I use the name of a file, which can be suffixed by a language's name, to create or retrieve a toplevel namespace in a model.
+I use the name of a file, which can be suffixed by a language's name, to create or retrieve a toplevel namespace in the importer's model.
 I am best used in tandem with `CS18NFileNameSuffixLanguageStrategy`.
 
 ```

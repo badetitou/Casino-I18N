@@ -1,5 +1,5 @@
 "
-I use a user-defined block to create or retrieve an entry in a model.
+I use a user-defined block to create or retrieve an entry.
 
 ```
 CS18NPropertiesImporter new entryStrategy:

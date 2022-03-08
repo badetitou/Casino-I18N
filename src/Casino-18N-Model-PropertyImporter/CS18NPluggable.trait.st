@@ -1,5 +1,5 @@
 "
-I define a block exposed to users for custom implementations.
+I define a one-argument block exposed to users for custom implementations.
 "
 Trait {
 	#name : #CS18NPluggable,

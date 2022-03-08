@@ -53,7 +53,7 @@ CS18NModel >> ensureNamespace: aName [
 		  ifNone: [ self add: (CS18NNamespace new name: aName) ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'public-entity-creation' }
 CS18NModel >> entryForPath: aQualifiedKey [
 
 	^ (aQualifiedKey includes: $.)

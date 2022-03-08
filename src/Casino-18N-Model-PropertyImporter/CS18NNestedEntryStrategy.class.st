@@ -1,5 +1,5 @@
 "
-I use a key and its qualifiers to create or retrieve a path to an entry in a model.
+I use a key and its qualifiers to create or retrieve a path of namespaces to an entry from the importer's current namespace.
 
 ```
 CS18NPropertiesImporter new entryStrategy:
