@@ -72,8 +72,12 @@ CS18NPropertiesImporter >> entryStrategy: anEntryStrategy [
 { #category : #accessing }
 CS18NPropertiesImporter >> importFile: aFileReference [
 
+	logger ifNotNil: [ 
+		logger record:
+			'Importing file: ' , aFileReference basenameWithoutExtension ].
 	currentLanguage := languageStrategy languageForFile: aFileReference.
-	currentNamespace := namespaceStrategy namespaceForFile: aFileReference.
+	currentNamespace := namespaceStrategy namespaceForFile:
+		                    aFileReference.
 	self importString: aFileReference contents
 ]
 
@@ -100,6 +104,18 @@ CS18NPropertiesImporter >> languageStrategy: aLanguageStrategy [
 
 	languageStrategy := aLanguageStrategy.
 	languageStrategy importer: self
+]
+
+{ #category : #accessing }
+CS18NPropertiesImporter >> logger [
+
+	^ logger
+]
+
+{ #category : #accessing }
+CS18NPropertiesImporter >> logger: aLogger [
+
+	logger := aLogger
 ]
 
 { #category : #accessing }
