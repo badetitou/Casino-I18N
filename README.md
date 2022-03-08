@@ -50,16 +50,32 @@ Metacello new
 ### Extraction
 
 The main class for the extraction is: `CS18NPropertiesImporter`.
-It extracts into a model a properties file.
+It extracts into a model a properties file.\
+Because the convention used to write those files might differ between projects, there are different strategies for extracting:
+- a language from a file:
+  - `CS18NFileNameLanguageStrategy` uses the file's name,
+  - `CS18NFileNameSuffixLanguageStrategy` uses the suffix of the file's name after the last user-defined separator;
+- namespaces from a file:
+  - `CS18NFileNameNamespaceStrategy` uses the file's name,
+  - `CS18NFileNamePrefixNamespaceStrategy` uses the prefix of the file's name up to the last user-defined separator,
+  - `CS18NFilePathNamespaceStrategy` uses indexed elements of the file's path for nested namespaces;
+- an entry from a key:
+  - `CS18NLiteralEntryStrategy` uses the key as-is,
+  - `CS18NNestedEntryStrategy` considers the key to be in qualified notation for an entry nested in namespaces.
+
+Also:
+- a `Static` strategy for languages and namespaces, which always returns the same user-defined entity,
+- a `Pluggable` strategy for each, which takes a user-defined block for an easy custom implementation.
 
 example:
 
 ```st
-| i18nModel importer |
-i18nModel := CS18NModel new.
-
-importer := CS18NPropertiesImporter new.
-importer model: i18nModel.
+| importer |
+importer := CS18NPropertiesImporter new
+  model: CS18NModel new;
+  languageStrategy: (CS18NFileNameSuffixLanguageStrategy new separator: $_);
+  namespaceStrategy: (CS18NStaticNamespaceStrategy new namespace: 'root');
+  entryStrategy: CS18NLiteralEntryStrategy new.
 
 importer importFile: 'D:\path\to\file\myfile_en.properties' asFileReference.
 importer model
