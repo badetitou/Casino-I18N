@@ -3,7 +3,8 @@ Class {
 	#superclass : #MooseModel,
 	#instVars : [
 		'nameConflicts',
-		'multiValueEntries'
+		'multiValueEntries',
+		'importer'
 	],
 	#category : #'Casino-18N-Model-Model'
 }
@@ -29,7 +30,9 @@ CS18NModel >> ensureEntry: aKeyName [
 	^ (self allWithType: CS18NEntry)
 		  detect: [ :entry | entry key name = aKeyName ]
 		  ifNone: [ 
-		  self add: (CS18NEntry new key: (CS18NKey new name: aKeyName)) ]
+			  importer createEntry key: (importer createKey
+					   name: aKeyName;
+					   yourself) ]
 ]
 
 { #category : #'public-entity-creation' }
@@ -39,8 +42,7 @@ CS18NModel >> ensureLanguage: aLanguageShortName [
 
 	^ (self allWithType: CS18NLanguage)
 		  detect: [ :lang | lang shortName = aLanguageShortName ]
-		  ifNone: [ 
-		  self add: (CS18NLanguage new shortName: aLanguageShortName) ]
+		  ifNone: [ importer createLanguage shortName: aLanguageShortName ]
 ]
 
 { #category : #'public-entity-creation' }
@@ -50,7 +52,10 @@ CS18NModel >> ensureNamespace: aName [
 
 	^ (self allWithType: CS18NNamespace)
 		  detect: [ :namespace | namespace name = aName ]
-		  ifNone: [ self add: (CS18NNamespace new name: aName) ]
+		  ifNone: [ 
+			  importer createNamespace
+				  name: aName;
+				  yourself ]
 ]
 
 { #category : #'public-entity-creation' }
@@ -109,6 +114,18 @@ CS18NModel >> entryForPath: aQualifiedKey from: parentNamespace [
 			  namespace addContainable: (CS18NEntry new
 					   namespace: namespace;
 					   key: (CS18NKey new name: keyName)) ]
+]
+
+{ #category : #accessing }
+CS18NModel >> importer [
+
+	^ importer
+]
+
+{ #category : #accessing }
+CS18NModel >> importer: anObject [
+
+	importer := anObject
 ]
 
 { #category : #initialization }

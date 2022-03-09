@@ -61,8 +61,11 @@ CS18NNamespace >> ensureEntry: aKeyName [
 			  containable class == CS18NEntry and: [ 
 				  containable key name = aKeyName ] ]
 		  ifNone: [ 
-			  self addContainable:
-				  (CS18NEntry new key: (CS18NKey new name: aKeyName)) ]
+			  self addContainable: (self mooseModel importer createEntry
+					   key: (self mooseModel importer createKey
+							    name: aKeyName;
+							    yourself);
+					   yourself) ]
 ]
 
 { #category : #'public-entity-creation' }
@@ -73,7 +76,7 @@ CS18NNamespace >> ensureSubNamespace: aName [
 	^ self containables
 		  detect: [ :containable | 
 			  containable class == self class and: [ containable name = aName ] ]
-		  ifNone: [ self addContainable: (self class new name: aName) ]
+		  ifNone: [ self addContainable: (self mooseModel importer createNamespace name: aName) ]
 ]
 
 { #category : #accessing }

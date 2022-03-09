@@ -1,15 +1,27 @@
 Class {
 	#name : #CS18NNamespaceTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'i18model'
+	],
 	#category : #'Casino-18N-Model-Tests'
 }
+
+{ #category : #tests }
+CS18NNamespaceTest >> setUp [
+	super setUp.
+	i18model := CS18NModel new.
+	i18model importer: (CS18NPropertiesImporter new
+			 model: i18model;
+			 yourself)
+]
 
 { #category : #tests }
 CS18NNamespaceTest >> testCompleteName [
 
 	| namespace |
-	namespace := CS18NNamespace new name: 'Hello'.
-	namespace := namespace addContainable: (CS18NNamespace new name: 'world').
+	namespace := i18model importer createNamespace name: 'Hello'.
+	namespace := namespace addContainable: (i18model importer createNamespace name: 'world').
 	self assert: namespace completeName equals: 'Hello.world'
 ]
 
@@ -17,28 +29,31 @@ CS18NNamespaceTest >> testCompleteName [
 CS18NNamespaceTest >> testEnsureEntry [
 
 	| namespace anEntry |
-	namespace := CS18NNamespace new name: 'Hello'.
+	namespace := i18model importer createNamespace name: 'Hello'.
 
 	"new entry"
 	anEntry := namespace ensureEntry: 'foo'.
-	self
-		assert: anEntry key name equals: 'foo'. self
-		assert: anEntry namespace equals: namespace.
+	self assert: anEntry key name equals: 'foo'.
+	self assert: anEntry namespace equals: namespace.
 
 	"retrieve entry"
 	self assert: anEntry equals: (namespace ensureEntry: 'foo').
 
 	"no conflict with subnamespaces"
-	namespace addContainable: (CS18NNamespace new name: 'bar').
+	namespace addContainable:
+		(i18model importer createNamespace name: 'bar').
 	anEntry := namespace ensureEntry: 'bar'.
-	self assert: anEntry class equals: CS18NEntry
+	self assert: anEntry class equals: CS18NEntry.
+
+	"entries added to the model"
+	self assert: (i18model allWithType: CS18NEntry) size equals: 2
 ]
 
 { #category : #tests }
 CS18NNamespaceTest >> testEnsureSubNamespace [
 
 	| namespace subNamespace |
-	namespace := CS18NNamespace new name: 'Hello'.
+	namespace := i18model importer createNamespace name: 'Hello'.
 
 	"new subnamespace"
 	subNamespace := namespace ensureSubNamespace: 'foo'.
@@ -53,7 +68,9 @@ CS18NNamespaceTest >> testEnsureSubNamespace [
 
 	"no conflict with entries"
 	namespace addContainable:
-		(CS18NEntry new key: (CS18NKey new name: 'bar')).
+		(i18model importer createEntry key: (i18model importer createKey name: 'bar')).
 	subNamespace := namespace ensureSubNamespace: 'bar'.
-	self assert: subNamespace class equals: CS18NNamespace
+	self assert: subNamespace class equals: CS18NNamespace.
+	
+	self assert: (i18model allWithType: CS18NNamespace) size equals: 3
 ]

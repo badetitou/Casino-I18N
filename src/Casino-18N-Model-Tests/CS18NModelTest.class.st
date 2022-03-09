@@ -11,6 +11,9 @@ Class {
 CS18NModelTest >> setUp [
 
 	model := CS18NModel new.
+	model importer: (CS18NPropertiesImporter new
+			 model: model;
+			 yourself)
 ]
 
 { #category : #tests }
