@@ -75,11 +75,12 @@ CS18NStrategyTest >> testFilePathNamespaceStrategy [
 { #category : #tests }
 CS18NStrategyTest >> testLiteralEntryStrategy [
 
-	| strategy entry |
+	| strategy entry namespace |
 	strategy := CS18NLiteralEntryStrategy new.
+	namespace := importer createNamespace. 
 	importer
 		entryStrategy: strategy;
-		currentNamespace: CS18NNamespace new.
+		currentNamespace: namespace.
 	entry := strategy entryForKey: 'foo.bar'.
 	self assert: entry key name equals: 'foo.bar'
 ]
