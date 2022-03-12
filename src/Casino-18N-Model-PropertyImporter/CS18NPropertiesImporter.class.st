@@ -99,7 +99,7 @@ CS18NPropertiesImporter >> importFile: aFileReference [
 
 	logger ifNotNil: [ 
 		logger record:
-			'Importing file: ' , aFileReference basenameWithoutExtension ].
+			'Importing file: ' , aFileReference fullName ].
 	currentLanguage := languageStrategy languageForFile: aFileReference.
 	currentNamespace := namespaceStrategy namespaceForFile:
 		                    aFileReference.
@@ -129,6 +129,63 @@ CS18NPropertiesImporter >> languageStrategy: aLanguageStrategy [
 
 	languageStrategy := aLanguageStrategy.
 	languageStrategy importer: self
+]
+
+{ #category : #logging }
+CS18NPropertiesImporter >> logMultiValueEntries [
+
+	"Log every entry that has multiple values with the same language."
+
+	logger ifNil: [ ^ nil ].
+	logger
+		execute: [ 
+			(model allWithType: CS18NEntry) do: [ :entry | 
+				| languageValues isMultiValue |
+				languageValues := Dictionary new.
+				isMultiValue := false.
+				entry valuesDo: [ :value | 
+					languageValues
+						at: value language
+						update: [ :values | 
+							isMultiValue := true.
+							values
+								add: value;
+								yourself ]
+						initial: [ 
+							OrderedCollection new
+								add: value;
+								yourself ] ].
+				isMultiValue ifTrue: [ 
+					logger
+						execute: [ 
+							languageValues associationsDo: [ :lang :values | 
+								values size > 1 ifTrue: [ 
+									logger
+										execute: [ values do: [ :value | logger record: value ] ]
+										recordedAs: ('' join: { 
+													 'language: '.
+													 lang shortName }) ] ] ]
+						recordedAs: ('' join: { 
+									 'entry: '.
+									 entry key completeName }) ] ] ]
+		recordedAs: 'entries with multiple values for the same language.'
+]
+
+{ #category : #logging }
+CS18NPropertiesImporter >> logNameConflicts [
+
+	"Log every conflict between a namespace and an entry key."
+
+	logger ifNil: [ ^ nil ].
+	logger
+		execute: [ 
+			(model allWithType: CS18NEntry) do: [ :entry | 
+				entry namespace containables
+					detect: [ :containable | 
+						containable class == CS18NNamespace and: [ 
+							containable name = entry key name ] ]
+					ifOne: [ :namespace | logger record: namespace completeName ] ] ]
+		recordedAs: 'conflicts between namespaces and entries.'
 ]
 
 { #category : #accessing }
