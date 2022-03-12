@@ -94,7 +94,7 @@ CS18NPropertiesImporter >> entryStrategy: anEntryStrategy [
 	entryStrategy importer: self
 ]
 
-{ #category : #accessing }
+{ #category : #importing }
 CS18NPropertiesImporter >> importFile: aFileReference [
 
 	logger ifNotNil: [ 
@@ -106,7 +106,7 @@ CS18NPropertiesImporter >> importFile: aFileReference [
 	self importString: aFileReference contents
 ]
 
-{ #category : #accessing }
+{ #category : #importing }
 CS18NPropertiesImporter >> importString: aString [
 
 	(parser parse: aString) do: [ :keyValue | 

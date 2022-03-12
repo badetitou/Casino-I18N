@@ -9,33 +9,38 @@ Class {
 	#category : #'Casino-18N-Model-PropertyExporter'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #exporting }
 CS18NPropertiesExporter >> constructNamespace: aNamespace [
 
 	| dic |
-	dic := Dictionary new.
+	dic := SortedCollection new: aNamespace containables size.
 	aNamespace containables do: [ :containable | 
 		(containable isKindOf: CS18NNamespace)
-			ifTrue: [ dic at: containable name put: (self constructNamespace: containable) ]
-			ifFalse: [ "should be an CS18NEntry" 
-				dic at: containable key name put: (containable values detect: [ :value | value language = language ] ifOne: [ :value | value name ] ifNone: [ '' ]) ] ].
-	^ dic
+			ifTrue: [ 
+			dic add: containable name -> (self constructNamespace: containable) ]
+			ifFalse: [ "should be an CS18NEntry"
+				dic add: containable key name -> (containable values
+						 detect: [ :value | value language = language ]
+						 ifOne: [ :value | value name ]
+						 ifNone: [ '' ]) ] ].
+	^ dic asOrderedDictionary
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #exporting }
 CS18NPropertiesExporter >> export [
 
 	| writter rootDic |
 	writter := NeoJSONWriter new.
-	writter for: CS18NNamespace customDo: [ :mapper | mapper encoder: [ :namespace | (self constructNamespace: namespace) asDictionary ] ].
-	rootDic := Dictionary new.
+	writter for: CS18NNamespace customDo: [ :mapper | 
+		mapper encoder: [ :namespace | self constructNamespace: namespace ] ].
+	rootDic := SortedCollection new.
 	(model allWithType: CS18NNamespace)
 		select: [ :namespace | namespace namespace isNil ]
-		thenDo: [ :namespace | rootDic at: namespace name put: namespace ].
+		thenDo: [ :namespace | rootDic add: namespace name -> namespace ].
 	writter
 		on: self stream;
 		prettyPrint: true;
-		nextPut: rootDic
+		nextPut: rootDic asOrderedDictionary
 ]
 
 { #category : #accessing }
