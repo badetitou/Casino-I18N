@@ -27,7 +27,7 @@ CS18NPropertiesParser >> label [
 		    (Set newFrom: { $.. $-. $_. $[. $] }))
 	   / ($\ asPParser , (PP2PredicateObjectNode noneOf: { 
 				     Character cr.
-				     Character lf }))) star flatten trimBlanks
+				     Character lf }))) star flatten trim
 ]
 
 { #category : #accessing }

@@ -18,7 +18,8 @@ CS18NStrategyTest >> setUp [
 CS18NStrategyTest >> testFileNameLanguageStrategy [
 
 	| strategy lang |
-	strategy := CS18NFileNameLanguageStrategy new importer: importer.
+	importer languageStrategy:
+		(strategy := CS18NFileNameLanguageStrategy new).
 	lang := strategy languageForFile: 'fr.properties' asFileReference.
 	self assert: lang shortName equals: 'fr'
 ]
@@ -77,12 +78,13 @@ CS18NStrategyTest >> testLiteralEntryStrategy [
 
 	| strategy entry namespace |
 	strategy := CS18NLiteralEntryStrategy new.
-	namespace := importer createNamespace. 
+	namespace := importer createNamespace name: 'root'.
 	importer
 		entryStrategy: strategy;
 		currentNamespace: namespace.
 	entry := strategy entryForKey: 'foo.bar'.
-	self assert: entry key name equals: 'foo.bar'
+	self assert: entry key name equals: 'foo.bar'.
+	self assert: entry namespace name equals: 'root'
 ]
 
 { #category : #tests }
@@ -118,12 +120,12 @@ CS18NStrategyTest >> testPluggableEntryStrategy [
 CS18NStrategyTest >> testPluggableLanguageStrategy [
 
 	| strategy lang |
-	importer currentNamespace: (importer model ensureNamespace: 'root').
-	strategy := CS18NPluggableLanguageStrategy new
-		            importer: importer;
-		            block: [ :file | 
-			            importer model ensureLanguage:
-					            (file basenameWithoutExtension copyUpTo: $-) ].
+	strategy := CS18NPluggableLanguageStrategy new block: [ :file | 
+		            importer model ensureLanguage:
+			            (file basenameWithoutExtension copyUpTo: $-) ].
+	importer
+		currentNamespace: (importer model ensureNamespace: 'root');
+		entryStrategy: strategy.
 	lang := strategy languageForFile: 'fr-foo.properties' asFileReference.
 	self assert: lang shortName equals: 'fr'
 ]
@@ -132,16 +134,60 @@ CS18NStrategyTest >> testPluggableLanguageStrategy [
 CS18NStrategyTest >> testPluggableNamespaceStrategy [
 
 	| strategy namespace |
-	importer currentNamespace: (importer model ensureNamespace: 'root').
-	strategy := CS18NPluggableNamespaceStrategy new
-		            importer: importer;
-		            block: [ :file | 
-			            importer currentNamespace ensureSubNamespace:
-					            (file basenameWithoutExtension copyAfter: $-) ].
+	strategy := CS18NPluggableNamespaceStrategy new block: [ :file | 
+		            importer currentNamespace ensureSubNamespace:
+			            (file basenameWithoutExtension copyAfter: $-) ].
+	importer
+		currentNamespace: (importer model ensureNamespace: 'root');
+		namespaceStrategy: strategy.
 	namespace := strategy namespaceForFile:
 		             'fr-foo.properties' asFileReference.
 	self assert: namespace name equals: 'foo'.
 	self assert: namespace namespace name equals: 'root'
+]
+
+{ #category : #tests }
+CS18NStrategyTest >> testSmartEntryStrategy [
+
+	| strategy entry1 entry2 entry3 |
+	importer
+		currentNamespace: (importer model ensureNamespace: 'root');
+		entryStrategy: (strategy := CS18NSmartEntryStrategy new).
+
+	entry1 := strategy entryForKey: 'foo.bar.baz'.
+	self assert: entry1 key name equals: 'baz'.
+	self assert: entry1 namespace name equals: 'bar'.
+	self assert: entry1 namespace namespace name equals: 'foo'.
+	self assert: entry1 namespace namespace namespace name equals: 'root'.
+
+	entry2 := strategy entryForKey: 'foo.bar'.
+	self assert: entry2 key name equals: 'bar'.
+	self assert: entry1 key name equals: 'bar.baz'.
+	self assert: entry1 namespace equals: entry2 namespace.
+
+	entry3 := strategy entryForKey: 'foo'.
+	self assert: entry3 key name equals: 'foo'.
+	self assert: entry2 key name equals: 'foo.bar'.
+	self assert: entry1 key name equals: 'foo.bar.baz'.
+	self assert: entry1 namespace equals: entry2 namespace.
+	self assert: entry1 namespace equals: entry3 namespace.
+
+	entry1 := strategy entryForKey: 'foo.bar.baz.foo'.
+	self assert: entry1 key name equals: 'foo.bar.baz.foo'.
+
+	entry1 := strategy entryForKey: 'a.a'.
+	entry2 := strategy entryForKey: 'a.a.a.a'.
+	self assert: entry1 key name equals: 'a'.
+	self assert: entry1 namespace name equals: 'a'.
+	self assert: entry2 key name equals: 'a'.
+	self assert: entry2 namespace name equals: 'a.a'.
+	entry3 := strategy entryForKey: 'a'.
+	self assert: entry1 key name equals: 'a.a'.
+	self assert: entry1 namespace name equals: 'root'.
+	self assert: entry2 key name equals: 'a'.
+	self assert: entry2 namespace name equals: 'a.a.a'.
+	self assert: entry3 key name equals: 'a'.
+	self assert: entry3 namespace name equals: 'root'
 ]
 
 { #category : #tests }
