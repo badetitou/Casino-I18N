@@ -15,44 +15,49 @@ Class {
 { #category : #accessing }
 CS18NPropertiesParser >> comment [
 
-	^ ($# asPParser , newline negate star) trim
+	^ ($# asPParser / $! asPParser , newline negate star) trim
 ]
 
 { #category : #accessing }
 CS18NPropertiesParser >> label [
 
-	^ (#letter asPParser / #digit asPParser / $- asPParser / $_ asPParser
-	   / $[ asPParser / $] asPParser / '\=' asPParser / $. asPParser)
-		  star flatten trim
+	^ (#word asPParser
+	   /
+	   (PP2PredicateObjectNode anyOf:
+		    (Set newFrom: { $.. $-. $_. $[. $] }))
+	   / ($\ asPParser , (PP2PredicateObjectNode noneOf: { 
+				     Character cr.
+				     Character lf }))) star flatten trimBlanks
 ]
 
 { #category : #accessing }
 CS18NPropertiesParser >> newline [
 
-	^ Character lf asPParser / (Character cr asPParser , Character lf asPParser optional)
+	^ Character lf asPParser
+	  / (Character cr asPParser , Character lf asPParser optional)
 ]
 
 { #category : #accessing }
 CS18NPropertiesParser >> pair [
 
-	^ label , $= asPParser token trimBlanks , pairValue ==> [ :token | (token at: 1) -> (token at: 3) ]
+	^ label , ($= asPParser / $: asPParser) , pairValue
+	  ==> [ :token | (token at: 1) -> (token at: 3) ]
 ]
 
 { #category : #accessing }
 CS18NPropertiesParser >> pairValue [
 
-	^ (PP2PredicateObjectNode noneOf: { 
-			   $#.
-			   Character cr.
-			   Character lf }) star flatten
+	^ ('\\' asPParser
+	   / ($\ asPParser , newline trimBlanks ==> [ :ignored | '' ])
+	   / newline negate) star ==> [ :token | ('' join: token) trimLeft ]
 ]
 
 { #category : #accessing }
 CS18NPropertiesParser >> pairs [
 
-	^ ((newline / comment) star , pair ==> [ :token | token second ]) star , (newline/comment) star ==> [ :token | 
-	  ((Array withAll: token first)
-		   yourself) ]
+	^ ((newline / comment) star , pair ==> [ :token | token second ])
+		  star , (newline / comment) star
+	  ==> [ :token | token first asArray ]
 ]
 
 { #category : #accessing }

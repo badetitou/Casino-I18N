@@ -22,6 +22,53 @@ CS18NPropertiesParserTest >> setUp [
 ]
 
 { #category : #tests }
+CS18NPropertiesParserTest >> testComplexParsing [
+
+	| result |
+	"test string taken from https://en.wikipedia.org/wiki/.properties"
+	result := parser parse: '# You are reading the ".properties" entry.
+! The exclamation mark can also mark text as comments.
+# The key characters =, and : should be written with
+# a preceding backslash to ensure that they are properly loaded.
+# However, there is no need to precede the value characters =, and : by a backslash.
+website = https://en.wikipedia.org/
+language = English
+# The backslash below tells the application to continue reading
+# the value onto the next line.
+message = Welcome to \
+          Wikipedia!
+# But if the number of backslashes at the end of the line is even, the next line is not included in the value. In the following example, the value for "key" is "valueOverOneLine\"
+key = valueOverOneLine\\
+# This line is not included in the value for "key"
+# Add spaces to the key
+key\ with\ spaces = This is the value that could be looked up with the key "key with spaces".
+# The characters = and : in the key must be escaped as well:
+key\:with\=colonAndEqualsSign = This is the value for the key "key:with=colonAndEqualsSign"
+# Unicode
+tab : \u0009
+# If you want your property to include a backslash, it should be escaped by another backslash
+path=c:\\wiki\\templates
+# However, some editors will handle this automatically'.
+
+	self assert: result isPetit2Success.
+	self
+		assert: (result at: 1)
+		equals: 'website' -> 'https://en.wikipedia.org/'.
+	self assert: (result at: 2) equals: 'language' -> 'English'.
+	self
+		assert: (result at: 3)
+		equals: 'message' -> 'Welcome to Wikipedia!'.
+	self assert: (result at: 4) equals: 'key' -> 'valueOverOneLine\\'.
+	self assert: (result at: 5) equals: 'key\ with\ spaces'
+		->
+		'This is the value that could be looked up with the key "key with spaces".'.
+	self assert: (result at: 6) equals: 'key\:with\=colonAndEqualsSign'
+		-> 'This is the value for the key "key:with=colonAndEqualsSign"'.
+	self assert: (result at: 7) equals: 'tab' -> '\u0009'.
+	self assert: (result at: 8) equals: 'path' -> 'c:\\wiki\\templates'
+]
+
+{ #category : #tests }
 CS18NPropertiesParserTest >> testPairValueParseDoubleQuote [
 
 	self assert: (parser pairValue parse: 'auj''d') equals: 'auj''d'.
@@ -39,6 +86,7 @@ CS18NPropertiesParserTest >> testParseEmpty [
 	| result |
 	result := parser parse: ''.
 	self assert: result isPetit2Success.
+	self assert: result size equals: 0
 ]
 
 { #category : #tests }
@@ -47,7 +95,8 @@ CS18NPropertiesParserTest >> testParseEmptyValue [
 	result := parser parse: '
 bla=
 ble=bla'.
-	self assert: result size equals: 2.
+	self assert: result first equals: 'bla' -> ''.
+	self assert: result second equals: 'ble' -> 'bla'
 ]
 
 { #category : #tests }
@@ -61,8 +110,9 @@ CS18NPropertiesParserTest >> testParseOnlyComments [
 	| result |
 	result := parser parse: '
 #bla
-#bla'.
+!bla'.
 	self assert: result isPetit2Success.
+	self assert: result size equals: 0
 ]
 
 { #category : #tests }
