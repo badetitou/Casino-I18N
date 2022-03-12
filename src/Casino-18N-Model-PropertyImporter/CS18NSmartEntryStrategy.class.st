@@ -95,5 +95,7 @@ CS18NSmartEntryStrategy >> raiseNamespace: aNamespace [
 							 aNamespace name.
 							 containable key name }) ].
 		containable namespace: aNamespace namespace ].
-	aNamespace namespace: nil
+	"remove references to aNamespace"
+	aNamespace namespace: nil.
+	importer model remove: aNamespace
 ]
