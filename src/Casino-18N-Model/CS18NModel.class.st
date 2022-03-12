@@ -89,9 +89,8 @@ CS18NModel >> entryForPath: aQualifiedKey from: parentNamespace [
 			  containable class == CS18NEntry and: [ 
 				  containable key name = keyName ] ]
 		  ifNone: [ 
-			  namespace addContainable: (CS18NEntry new
-					   namespace: namespace;
-					   key: (CS18NKey new name: keyName)) ]
+			  namespace addContainable:
+				  (importer createEntry key: (importer createKey name: keyName)) ]
 ]
 
 { #category : #accessing }
