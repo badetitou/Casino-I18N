@@ -49,7 +49,8 @@ CS18NModel >> ensureNamespace: aName [
 	"Ensure the existence of a root namespace with the given name."
 
 	^ (self allWithType: CS18NNamespace)
-		  detect: [ :namespace | namespace name = aName ]
+		  detect: [ :namespace | 
+			  namespace namespace isNil and: [ namespace name = aName ] ]
 		  ifNone: [ 
 			  importer createNamespace
 				  name: aName;
