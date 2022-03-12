@@ -143,9 +143,9 @@ CS18NPropertiesImporter >> logMultiValueEntries [
 				| languageValues isMultiValue |
 				languageValues := Dictionary new.
 				isMultiValue := false.
-				entry valuesDo: [ :value | 
+				entry values do: [ :value | 
 					languageValues
-						at: value language
+						at: value language shortName
 						update: [ :values | 
 							isMultiValue := true.
 							values
@@ -158,16 +158,16 @@ CS18NPropertiesImporter >> logMultiValueEntries [
 				isMultiValue ifTrue: [ 
 					logger
 						execute: [ 
-							languageValues associationsDo: [ :lang :values | 
+							languageValues keysAndValuesDo: [ :lang :values | 
 								values size > 1 ifTrue: [ 
 									logger
-										execute: [ values do: [ :value | logger record: value ] ]
+										execute: [ values do: [ :value | logger record: value name ] ]
 										recordedAs: ('' join: { 
 													 'language: '.
-													 lang shortName }) ] ] ]
+													 lang }) ] ] ]
 						recordedAs: ('' join: { 
 									 'entry: '.
-									 entry key completeName }) ] ] ]
+									 entry completeName }) ] ] ]
 		recordedAs: 'entries with multiple values for the same language.'
 ]
 
