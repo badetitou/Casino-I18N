@@ -30,35 +30,10 @@ Class {
 	#category : #'Casino-18N-Model-PropertyImporter'
 }
 
-{ #category : #factory }
-CS18NPropertiesImporter >> createEntry [
-	^ self createInModel: CS18NEntry
-]
-
 { #category : #accessing }
 CS18NPropertiesImporter >> createInModel: entity [
 
 	^ model add: entity new
-]
-
-{ #category : #factory }
-CS18NPropertiesImporter >> createKey [
-	^ self createInModel: CS18NKey
-]
-
-{ #category : #factory }
-CS18NPropertiesImporter >> createLanguage [
-	^ self createInModel: CS18NLanguage
-]
-
-{ #category : #factory }
-CS18NPropertiesImporter >> createNamespace [
-	^ self createInModel: CS18NNamespace
-]
-
-{ #category : #factory }
-CS18NPropertiesImporter >> createValue [
-	^ self createInModel: CS18NValue
 ]
 
 { #category : #accessing }
@@ -110,7 +85,8 @@ CS18NPropertiesImporter >> importFile: aFileReference [
 CS18NPropertiesImporter >> importString: aString [
 
 	(parser parse: aString) do: [ :keyValue | 
-		(entryStrategy entryForKey: keyValue key) addValue: (self createValue
+		(entryStrategy entryForKey: keyValue key) addValue:
+			(model createValue
 				 name: keyValue value;
 				 language: currentLanguage) ]
 ]
@@ -182,8 +158,8 @@ CS18NPropertiesImporter >> logNameConflicts [
 			(model allWithType: CS18NEntry) do: [ :entry | 
 				entry namespace containables
 					detect: [ :containable | 
-						containable class == CS18NNamespace and: [ 
-							containable name = entry key name ] ]
+						containable isNamespace and: [ 
+							containable name = entry name ] ]
 					ifOne: [ :namespace | logger record: namespace completeName ] ] ]
 		recordedAs: 'conflicts between namespaces and entries.'
 ]
@@ -209,8 +185,7 @@ CS18NPropertiesImporter >> model [
 { #category : #accessing }
 CS18NPropertiesImporter >> model: anObject [
 
-	model := anObject.
-	model importer: self
+	model := anObject
 ]
 
 { #category : #accessing }

@@ -15,7 +15,7 @@ CS18NPropertiesParserTest >> parserClass [
 	^ CS18NPropertiesParser
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CS18NPropertiesParserTest >> setUp [
 	super setUp.
 	parser := self parserClass new
@@ -78,7 +78,10 @@ CS18NPropertiesParserTest >> testPairValueParseDoubleQuote [
 { #category : #tests }
 CS18NPropertiesParserTest >> testParseDoubleQuote [
 
-	self assert: (parser parse: 'recherchePeriodeAUJOURD_HUI=Aujourd''hui') equals: { 'recherchePeriodeAUJOURD_HUI' -> 'Aujourd''hui' }.
+	self
+		assert:
+		(parser parse: 'recherchePeriodeAUJOURD_HUI=Aujourd''hui') first
+		equals: 'recherchePeriodeAUJOURD_HUI' -> 'Aujourd''hui'
 ]
 
 { #category : #tests }

@@ -54,11 +54,12 @@ CS18NSmartEntryStrategy >> entryForQualifiedKey: aKeyName [
 				  self entryForSimpleKey: name ]
 				  ifFalse: [ "found a name for a namespace with no conflict
 			update then restore current namespace around recursive call to keep context accurate"
-					  | entry |
+					  | parentNamespace entry |
+					  parentNamespace := importer currentNamespace.
 					  importer currentNamespace:
-						  (importer currentNamespace ensureSubNamespace: name).
+						  (parentNamespace ensureNamespace: name).
 					  entry := self entryForKey: rest.
-					  importer currentNamespace: importer currentNamespace namespace.
+					  importer currentNamespace: parentNamespace.
 					  entry ] ]
 ]
 

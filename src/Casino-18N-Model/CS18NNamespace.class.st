@@ -51,34 +51,6 @@ CS18NNamespace >> containablesGroup [
 	^ MooseSpecializedGroup withAll: self containables asSet
 ]
 
-{ #category : #'public-entity-creation' }
-CS18NNamespace >> ensureEntry: aKeyName [
-
-	"Ensure the existence of an entry with the given key name."
-
-	^ self containables
-		  detect: [ :containable | 
-			  containable class == CS18NEntry and: [ 
-				  containable key name = aKeyName ] ]
-		  ifNone: [ 
-			  self addContainable: (self mooseModel importer createEntry
-					   key: (self mooseModel importer createKey
-							    name: aKeyName;
-							    yourself);
-					   yourself) ]
-]
-
-{ #category : #'public-entity-creation' }
-CS18NNamespace >> ensureSubNamespace: aName [
-
-	"Ensure the existence of a subnamespace with the given name."
-
-	^ self containables
-		  detect: [ :containable | 
-			  containable class == self class and: [ containable name = aName ] ]
-		  ifNone: [ self addContainable: (self mooseModel importer createNamespace name: aName) ]
-]
-
 { #category : #accessing }
 CS18NNamespace >> name [
 

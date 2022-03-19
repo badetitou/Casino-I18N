@@ -33,7 +33,7 @@ CS18NStrategyTest >> testFileNameNamespaceStrategy [
 	namespace := strategy namespaceForFile:
 		             'foo.properties' asFileReference.
 	self assert: namespace name equals: 'foo'.
-	self assert: namespace namespace isNil
+	self assert: namespace namespace isRootNamespace
 ]
 
 { #category : #tests }
@@ -45,7 +45,7 @@ CS18NStrategyTest >> testFileNamePrefixNamespaceStrategy [
 	namespace := strategy namespaceForFile:
 		             'foo_fr.properties' asFileReference.
 	self assert: namespace name equals: 'foo'.
-	self assert: namespace namespace isNil
+	self assert: namespace namespace isRootNamespace
 ]
 
 { #category : #tests }
@@ -70,7 +70,7 @@ CS18NStrategyTest >> testFilePathNamespaceStrategy [
 		             'my/awesome/test/foo.properties' asFileReference.
 	self assert: namespace name equals: 'foo'.
 	self assert: namespace namespace name equals: 'awesome'.
-	self assert: namespace namespace namespace isNil
+	self assert: namespace namespace namespace isRootNamespace
 ]
 
 { #category : #tests }
@@ -78,7 +78,7 @@ CS18NStrategyTest >> testLiteralEntryStrategy [
 
 	| strategy entry namespace |
 	strategy := CS18NLiteralEntryStrategy new.
-	namespace := importer createNamespace name: 'root'.
+	namespace := importer model createNamespace name: 'root'.
 	importer
 		entryStrategy: strategy;
 		currentNamespace: namespace.
@@ -135,7 +135,7 @@ CS18NStrategyTest >> testPluggableNamespaceStrategy [
 
 	| strategy namespace |
 	strategy := CS18NPluggableNamespaceStrategy new block: [ :file | 
-		            importer currentNamespace ensureSubNamespace:
+		            importer currentNamespace ensureNamespace:
 			            (file basenameWithoutExtension copyAfter: $-) ].
 	importer
 		currentNamespace: (importer model ensureNamespace: 'root');
@@ -144,6 +144,19 @@ CS18NStrategyTest >> testPluggableNamespaceStrategy [
 		             'fr-foo.properties' asFileReference.
 	self assert: namespace name equals: 'foo'.
 	self assert: namespace namespace name equals: 'root'
+]
+
+{ #category : #tests }
+CS18NStrategyTest >> testRootNamespaceStrategy [
+
+	| strategy namespace |
+	strategy := CS18NRootNamespaceStrategy new.
+	importer namespaceStrategy: strategy.
+	
+	namespace := strategy namespaceForFile: 'foo'.
+	self assert: namespace class equals: CS18NRootNamespace.
+	self assert: namespace name equals: nil.
+	self assert: namespace equals: importer model rootNamespace.
 ]
 
 { #category : #tests }
@@ -209,5 +222,5 @@ CS18NStrategyTest >> testStaticNamespaceStrategy [
 	namespace := strategy namespaceForFile:
 		             'foo.properties' asFileReference.
 	self assert: namespace name equals: 'root'.
-	self assert: namespace namespace isNil
+	self assert: namespace namespace isRootNamespace
 ]

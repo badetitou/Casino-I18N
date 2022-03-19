@@ -13,34 +13,27 @@ Class {
 CS18NPropertiesExporter >> constructNamespace: aNamespace [
 
 	| dic |
-	dic := SortedCollection new: aNamespace containables size.
-	aNamespace containables do: [ :containable | 
-		(containable isKindOf: CS18NNamespace)
-			ifTrue: [ 
-			dic add: containable name -> (self constructNamespace: containable) ]
-			ifFalse: [ "should be an CS18NEntry"
-				dic add: containable key name -> (containable values
-						 detect: [ :value | value language = language ]
-						 ifOne: [ :value | value name ]
-						 ifNone: [ '' ]) ] ].
+	dic := aNamespace containables
+		       collect: [ :containable | 
+			       containable isNamespace
+				       ifTrue: [ 
+				       containable name -> (self constructNamespace: containable) ]
+				       ifFalse: [ "should be an CS18NEntry"
+					       containable name -> (containable values
+						        detect: [ :value | value language = language ]
+						        ifOne: [ :value | value name ]
+						        ifNone: [ '' ]) ] ]
+		       as: SortedCollection.
 	^ dic asOrderedDictionary
 ]
 
 { #category : #exporting }
 CS18NPropertiesExporter >> export [
 
-	| writter rootDic |
-	writter := NeoJSONWriter new.
-	writter for: CS18NNamespace customDo: [ :mapper | 
-		mapper encoder: [ :namespace | self constructNamespace: namespace ] ].
-	rootDic := SortedCollection new.
-	(model allWithType: CS18NNamespace)
-		select: [ :namespace | namespace namespace isNil ]
-		thenDo: [ :namespace | rootDic add: namespace name -> namespace ].
-	writter
-		on: self stream;
+	NeoJSONWriter new
+		on: stream;
 		prettyPrint: true;
-		nextPut: rootDic asOrderedDictionary
+		nextPut: (self constructNamespace: model rootNamespace)
 ]
 
 { #category : #accessing }
