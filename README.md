@@ -58,10 +58,12 @@ Because the convention used to write those files might differ between projects, 
 - namespaces from a file:
   - `CS18NFileNameNamespaceStrategy` uses the file's name,
   - `CS18NFileNamePrefixNamespaceStrategy` uses the prefix of the file's name up to the last user-defined separator,
-  - `CS18NFilePathNamespaceStrategy` uses indexed elements of the file's path for nested namespaces;
+  - `CS18NFilePathNamespaceStrategy` uses indexed elements of the file's path for nested namespaces,
+  - `CS18NRootNamespaceStrategy` answers the model's root namespace;
 - an entry from a key:
   - `CS18NLiteralEntryStrategy` uses the key as-is,
-  - `CS18NNestedEntryStrategy` considers the key to be in qualified notation for an entry nested in namespaces.
+  - `CS18NNestedEntryStrategy` considers the key to be in qualified notation for an entry nested in namespaces,
+  - `CS18NSmartEntryStrategy` behaves like the 'nested' strategy until it finds a conflict between an entry's key and a namespace, then it tries to avoid it by approaching the behavior of the 'literal' strategy.
 
 Also:
 - a `Static` strategy for languages and namespaces, which always returns the same user-defined entity,
