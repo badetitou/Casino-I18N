@@ -31,9 +31,8 @@ CS18NSmartEntryStrategy >> entryForQualifiedKey: aKeyName [
 	If a conflict exists up to the longest namespace composed of every qualifier, aKeyName is used as an entry key in the current namespace."
 
 	^ importer currentNamespace containables
-		  detect: [ :containable | "if an entry already exists with this name, the conflicts have already been checked"
-			  containable class == CS18NEntry and: [ 
-				  containable key name = aKeyName ] ]
+		  detect: [ :containable | "if an entry already exists with this name, the conflicts have already been checked" 
+			  containable isEntry and: [ containable key name = aKeyName ] ]
 		  ifNone: [ "otherwise make the checks"
 			  | name rest |
 			  name := aKeyName copyUpTo: $..
@@ -42,13 +41,12 @@ CS18NSmartEntryStrategy >> entryForQualifiedKey: aKeyName [
 			  rest isNotEmpty and: [ 
 				  importer currentNamespace containables anySatisfy: [ 
 					  :containable | "check for conflicting entry" 
-					  containable class == CS18NEntry and: [ 
-						  containable key name = name ] ] ] ] whileTrue: [ 
-				  name := '' join: { 
-						          name.
-						          $..
-						          (rest copyUpTo: $.) }.
-				  rest := rest copyAfter: $. ].
+					  containable isEntry and: [ containable key name = name ] ] ] ] 
+				  whileTrue: [ 
+					  name := '.' join: { 
+							          name.
+							          (rest copyUpTo: $.) }.
+					  rest := rest copyAfter: $. ].
 			  rest isEmpty
 				  ifTrue: [ "name must be an entry key" 
 				  self entryForSimpleKey: name ]
@@ -67,14 +65,12 @@ CS18NSmartEntryStrategy >> entryForQualifiedKey: aKeyName [
 CS18NSmartEntryStrategy >> entryForSimpleKey: aKeyName [
 
 	^ importer currentNamespace containables
-		  detect: [ :containable | "check if entry already exists"
-			  containable class == CS18NEntry and: [ 
-				  containable key name = aKeyName ] ]
+		  detect: [ :containable | "check if entry already exists" 
+			  containable isEntry and: [ containable key name = aKeyName ] ]
 		  ifNone: [ "check for a conflicting namespace"
 			  importer currentNamespace containables
 				  detect: [ :containable | 
-					  containable class == CS18NNamespace and: [ 
-						  containable name = aKeyName ] ]
+					  containable isNamespace and: [ containable name = aKeyName ] ]
 				  ifOne: [ :namespace | "namespace gives way to new entry" 
 					  self raiseNamespace: namespace ].
 			  importer currentNamespace ensureEntry: aKeyName ]
@@ -86,7 +82,7 @@ CS18NSmartEntryStrategy >> raiseNamespace: aNamespace [
 	"Raise the containables of aNamespace to its parent namespace."
 
 	aNamespace containables asArray do: [ :containable | "we can't modify links of containables while iterating over them because of FMRelationSlot properties, that's why we use an array copy"
-		containable class == CS18NNamespace
+		containable isNamespace
 			ifTrue: [ 
 				containable name: ('.' join: { 
 							 aNamespace name.
