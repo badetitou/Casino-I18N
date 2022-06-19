@@ -1,5 +1,14 @@
 "
 I take as input a Casino Model, and I tranform it by adding the I18N information based on a I18N model
+
+## Usage
+
+```
+CSNE18NModelTransformation new
+	csnModel: gwtModel;
+	i18nModel: i18nModel;
+	bind.
+```
 "
 Class {
 	#name : #CSNE18NModelTransformation,
