@@ -26,17 +26,6 @@ CS18NEntry >> label: anObject [
 ]
 
 { #category : #'*CasinoExtension-18N-Model-accessing' }
-CS18NEntry >> name [
-	"Relation named: #name type: #CSNUIName opposite: #i18nEntry"
-
-	<generated>
-	<derived>
-	<FMProperty: #name type: #CSNUIName opposite: #i18nEntry>
-	<package: #'CasinoExtension-18N-Model'>
-	^ self attributeAt: #name ifAbsent: [ nil ]
-]
-
-{ #category : #'*CasinoExtension-18N-Model-accessing' }
 CS18NEntry >> name: anObject [
 
 	<generated>
