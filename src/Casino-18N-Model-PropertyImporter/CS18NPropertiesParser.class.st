@@ -15,7 +15,8 @@ Class {
 { #category : #accessing }
 CS18NPropertiesParser >> comment [
 
-	^ ($# asPParser / $! asPParser / '// ' asPParser , newline negate star) trimBlanks
+	^ ($# asPParser / $< asPParser / $! asPParser / '// ' asPParser
+	   , newline negate star) trimBlanks
 ]
 
 { #category : #accessing }

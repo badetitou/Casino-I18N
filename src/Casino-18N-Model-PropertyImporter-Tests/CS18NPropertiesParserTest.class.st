@@ -22,6 +22,17 @@ CS18NPropertiesParserTest >> setUp [
 ]
 
 { #category : #tests }
+CS18NPropertiesParserTest >> testCommentWeirdWithInferiorOf [
+	| result |
+	result := parser parse: '
+<# Hello
+
+'.
+	self assert: result isPetit2Success.
+	self assert: result size equals: 0
+]
+
+{ #category : #tests }
 CS18NPropertiesParserTest >> testComplexParsing [
 
 	| result |
@@ -88,6 +99,18 @@ bla=ble
 test=hello'.
 	self assert: result first equals: 'bla' -> 'ble'.
 	self assert: result second equals: 'test' -> 'hello'
+]
+
+{ #category : #tests }
+CS18NPropertiesParserTest >> testOnlyCommentAndWeirdEnd [
+
+	| result |
+	result := parser parse: '<#--------------------------------------------------------------------------------------------------------
+#                             UcPpippf - TRANVERSE - MESSAGE - LOCALISATION 1
+#--------------------------------------------------------------------------------------------------------
+
+'.
+	self assert: result isPetit2Success
 ]
 
 { #category : #tests }
