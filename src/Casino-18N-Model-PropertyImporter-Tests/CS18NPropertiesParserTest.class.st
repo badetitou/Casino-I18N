@@ -226,6 +226,16 @@ CS18NPropertiesParserTest >> testValueWithoutLabel [
 ]
 
 { #category : #tests }
+CS18NPropertiesParserTest >> testWeirdLabelChar [
+	"considered as a comment to remove problem with this file"
+
+	| result |
+	result := parser parse: '// Hello =  '.
+	self assert: result isPetit2Success.
+	self assert: result isEmpty
+]
+
+{ #category : #tests }
 CS18NPropertiesParserTest >> testhiddenSpaceBetweenPairAndComment [
 
 	| result |
