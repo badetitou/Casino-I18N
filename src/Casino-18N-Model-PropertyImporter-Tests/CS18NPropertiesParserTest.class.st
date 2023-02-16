@@ -69,6 +69,28 @@ path=c:\\wiki\\templates
 ]
 
 { #category : #tests }
+CS18NPropertiesParserTest >> testEmptyLastLine [
+
+	| result |
+	result := parser parse: '
+bla=ble
+   '.
+	self assert: result first equals: 'bla' -> 'ble'
+]
+
+{ #category : #tests }
+CS18NPropertiesParserTest >> testEmptyLineBetween [
+
+	| result |
+	result := parser parse: '
+bla=ble
+
+test=hello'.
+	self assert: result first equals: 'bla' -> 'ble'.
+	self assert: result second equals: 'test' -> 'hello'
+]
+
+{ #category : #tests }
 CS18NPropertiesParserTest >> testPairValueParseDoubleQuote [
 
 	self assert: (parser pairValue parse: 'auj''d') equals: 'auj''d'.
@@ -182,4 +204,14 @@ CS18NPropertiesParserTest >> testSimpleParsing [
 	| result |
 	result := parser parse: 'bla=ble'.
 	self assert: result size = 1
+]
+
+{ #category : #tests }
+CS18NPropertiesParserTest >> testUnfinishedKeyValue [
+	| result |
+	result := parser parse: '
+bla
+ble=bla'.
+	self assert: result first equals: 'bla' -> ''.
+	self assert: result second equals: 'ble' -> 'bla'
 ]

@@ -56,7 +56,7 @@ CS18NPropertiesParser >> pairValue [
 CS18NPropertiesParser >> pairs [
 
 	^ ((newline / comment) star , pair ==> [ :token | token second ])
-		  star , (newline / comment) star
+		  star , (newline / comment) star trimBlanks 
 	  ==> [ :token | token first ]
 ]
 
