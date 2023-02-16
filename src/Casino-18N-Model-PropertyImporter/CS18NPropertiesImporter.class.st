@@ -25,7 +25,8 @@ Class {
 		'namespaceStrategy',
 		'languageStrategy',
 		'entryStrategy',
-		'logger'
+		'logger',
+		'encoding'
 	],
 	#category : #'Casino-18N-Model-PropertyImporter'
 }
@@ -61,6 +62,18 @@ CS18NPropertiesImporter >> currentNamespace: aNamespace [
 ]
 
 { #category : #accessing }
+CS18NPropertiesImporter >> encoding [
+
+	^ encoding
+]
+
+{ #category : #accessing }
+CS18NPropertiesImporter >> encoding: anObject [
+
+	encoding := anObject
+]
+
+{ #category : #accessing }
 CS18NPropertiesImporter >> entryStrategy: anEntryStrategy [
 
 	"I take a strategy to define entries and link with it."
@@ -73,12 +86,12 @@ CS18NPropertiesImporter >> entryStrategy: anEntryStrategy [
 CS18NPropertiesImporter >> importFile: aFileReference [
 
 	logger ifNotNil: [ 
-		logger record:
-			'Importing file: ' , aFileReference fullName ].
+		logger record: 'Importing file: ' , aFileReference fullName ].
 	currentLanguage := languageStrategy languageForFile: aFileReference.
 	currentNamespace := namespaceStrategy namespaceForFile:
 		                    aFileReference.
-	self importString: aFileReference contents
+	self importString:
+		(aFileReference readStreamEncoded: self encoding) contents
 ]
 
 { #category : #importing }
@@ -95,7 +108,8 @@ CS18NPropertiesImporter >> importString: aString [
 CS18NPropertiesImporter >> initialize [
 
 	super initialize.
-	parser := CS18NPropertiesParser new
+	parser := CS18NPropertiesParser new.
+	encoding := 'utf8'
 ]
 
 { #category : #accessing }
