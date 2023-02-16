@@ -199,6 +199,36 @@ ble=bla'.
 ]
 
 { #category : #tests }
+CS18NPropertiesParserTest >> testSeveralEmptyLastLine [
+
+	| result |
+	result := parser parse: '
+text=Liste
+infobulle=de
+
+	
+
+'.
+	self assert: result first equals: 'text' -> 'Liste'.
+	self assert: result second equals: 'infobulle' -> 'de'
+]
+
+{ #category : #tests }
+CS18NPropertiesParserTest >> testSeveralEmptyLastLineWithTabulation [
+
+	| result |
+	result := parser parse: '
+text=Liste
+infobulle=de
+
+	
+
+'.
+	self assert: result first equals: 'text' -> 'Liste'.
+	self assert: result second equals: 'infobulle' -> 'de'
+]
+
+{ #category : #tests }
 CS18NPropertiesParserTest >> testSimpleParsing [
 
 	| result |
