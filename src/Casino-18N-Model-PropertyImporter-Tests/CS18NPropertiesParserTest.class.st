@@ -127,7 +127,7 @@ ble=bla'.
 { #category : #tests }
 CS18NPropertiesParserTest >> testParseLabelWithDot [
 
-	self assert: (parser label parse: 'hello.world') equals: 'hello.world'.
+	self assert: (parser label parse: 'hello.world=') equals: 'hello.world'.
 ]
 
 { #category : #tests }
@@ -214,4 +214,13 @@ bla
 ble=bla'.
 	self assert: result first equals: 'bla' -> ''.
 	self assert: result second equals: 'ble' -> 'bla'
+]
+
+{ #category : #tests }
+CS18NPropertiesParserTest >> testValueWithoutLabel [
+
+	| result |
+	result := parser parse: '=ble'.
+	self assert: result size = 1.
+	self assert: result first equals: '' -> 'ble'
 ]

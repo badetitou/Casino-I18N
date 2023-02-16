@@ -15,7 +15,7 @@ Class {
 { #category : #accessing }
 CS18NPropertiesParser >> comment [
 
-	^ ($# asPParser / $! asPParser , newline negate star) trim
+	^ ($# asPParser / $! asPParser , newline negate star) trimBlanks
 ]
 
 { #category : #accessing }
@@ -28,6 +28,7 @@ CS18NPropertiesParser >> label [
 	   / ($\ asPParser , (PP2PredicateObjectNode noneOf: { 
 				     Character cr.
 				     Character lf }))) star flatten trim
+	  , ($= asPParser / $: asPParser) ==> [ :token | token at: 1 ]
 ]
 
 { #category : #accessing }
@@ -40,8 +41,11 @@ CS18NPropertiesParser >> newline [
 { #category : #accessing }
 CS18NPropertiesParser >> pair [
 
-	^ label , ($= asPParser / $: asPParser) , pairValue
-	  ==> [ :token | (token at: 1) -> (token at: 3) ]
+	^ label , pairValue ==> [ :token | (token at: 1) -> (token at: 2) ]
+	  / (#word asPParser , pairValue) flatten ==> [ :token | 
+	  (token isKindOf: Association)
+		  ifTrue: [ token ]
+		  ifFalse: [ token -> '' ] ]
 ]
 
 { #category : #accessing }
