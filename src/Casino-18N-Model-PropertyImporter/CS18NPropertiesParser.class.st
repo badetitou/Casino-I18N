@@ -59,8 +59,9 @@ CS18NPropertiesParser >> pairValue [
 { #category : #accessing }
 CS18NPropertiesParser >> pairs [
 
-	^ ((newline / comment) star , pair ==> [ :token | token second ])
-		  star , (newline / comment) star trimBlanks 
+	^ (($  asPParser star , newline / comment) star , pair
+	   ==> [ :token | token second ]) star
+	  , ($  asPParser star , newline / comment) star trimBlanks
 	  ==> [ :token | token first ]
 ]
 

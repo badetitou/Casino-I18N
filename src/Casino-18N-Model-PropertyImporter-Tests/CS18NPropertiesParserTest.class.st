@@ -224,3 +224,16 @@ CS18NPropertiesParserTest >> testValueWithoutLabel [
 	self assert: result size = 1.
 	self assert: result first equals: '' -> 'ble'
 ]
+
+{ #category : #tests }
+CS18NPropertiesParserTest >> testhiddenSpaceBetweenPairAndComment [
+
+	| result |
+	result := parser parse: '
+	
+aLabel=aVal
+ 
+# Some comment
+anotherLabel=anotherValue'.
+	self assert: result isPetit2Success
+]
