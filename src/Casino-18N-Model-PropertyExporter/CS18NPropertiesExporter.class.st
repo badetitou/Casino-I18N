@@ -22,11 +22,17 @@ CS18NPropertiesExporter >> constructNamespace: aNamespace [
 				       ifFalse: [ "should be an CS18NEntry"
 					       containable name -> (containable values
 						        detect: [ :value | value language = language ]
-						        ifOne: [ :value | value name ]
+						        ifOne: [ :value | self constructValueString: value ]
 						        ifNone: [ '' ]) ] ]
 		       as: SortedCollection.
 
 	^ dic asOrderedDictionary
+]
+
+{ #category : #exporting }
+CS18NPropertiesExporter >> constructValueString: aCS18NValue [
+
+	^ aCS18NValue name copyReplaceAll: '[%]' with: '{{ noname }}'
 ]
 
 { #category : #exporting }

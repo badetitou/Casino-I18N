@@ -59,3 +59,41 @@ CS18NPropertiesExporterTest >> testExportSimpleModel [
 	"hello" : "value"
 }'
 ]
+
+{ #category : #running }
+CS18NPropertiesExporterTest >> testExportValueWithAttribute [
+
+	| result entry language value |
+	language := CS18NLanguage new
+		            shortName: #fr;
+		            yourself.
+	model add: language.
+
+	entry := CS18NEntry new
+		         key: (CS18NKey new
+				          name: 'hello';
+				          yourself);
+		         yourself.
+	value := CS18NValue new
+		         name: 'value [%]';
+		         language: language;
+		         entry: entry;
+		         yourself.
+	value addValueVariable: (CS18NValueVariable new
+			 name: 'noname';
+			 startPos: 7;
+			 endPos: 9;
+			 yourself).
+	model rootNamespace addContainable: entry.
+	model add: entry.
+	model add: entry key.
+	model addAll: entry values.
+	result := String streamContents: [ :stream | 
+		          exporter
+			          stream: stream;
+			          language: language;
+			          export ].
+	self assert: result equals: '{
+	"hello" : "value {{ noname }}"
+}'
+]
