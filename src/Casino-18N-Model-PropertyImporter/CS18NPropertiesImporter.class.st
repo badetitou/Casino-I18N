@@ -85,7 +85,7 @@ CS18NPropertiesImporter >> entryStrategy: anEntryStrategy [
 { #category : #'private - importing' }
 CS18NPropertiesImporter >> extractModelValueAttributes: aModelValue [
 
-	| attributes ranges |
+	| attributes ranges rangesRegEx |
 	attributes := OrderedCollection new.
 	ranges := aModelValue name allRangesOfSubstring: '[%]'.
 	ranges do: [ :range | 
@@ -93,6 +93,14 @@ CS18NPropertiesImporter >> extractModelValueAttributes: aModelValue [
 				 startPos: range first;
 				 endPos: range last;
 				 name: 'noname';
+				 yourself) ].
+	rangesRegEx := aModelValue name allRangesOfRegexMatches: '{[^}]*}'.
+	rangesRegEx do: [ :range | 
+		attributes add: (CS18NValueVariable new
+				 startPos: range first;
+				 endPos: range last;
+				 name:
+					 (aModelValue name copyFrom: range first + 1 to: range last - 1);
 				 yourself) ].
 	^ attributes
 ]

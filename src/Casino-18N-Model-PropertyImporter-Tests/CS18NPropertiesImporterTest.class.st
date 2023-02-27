@@ -28,6 +28,28 @@ CS18NPropertiesImporterTest >> setUp [
 ]
 
 { #category : #tests }
+CS18NPropertiesImporterTest >> testExtractModelMixedValueNamedAttribute [
+
+	| result |
+	result := importer extractModelValueAttributes: (CS18NValue new
+			           name: 'Hello : {libelle} and [%]';
+			           yourself).
+
+	self assert: result size equals: 2.
+	self assert: result first class equals: CS18NValueVariable.
+	self assert: result first startPos equals: 23.
+	self assert: result first endPos equals: 25.
+	"No name because the name would be between the % and the last ] but we did not find example yet"
+	self assert: result first name equals: 'noname'.
+
+	self assert: result second class equals: CS18NValueVariable.
+	self assert: result second startPos equals: 9.
+	self assert: result second endPos equals: 17.
+	"No name because the name would be between the % and the last ] but we did not find example yet"
+	self assert: result second name equals: 'libelle'
+]
+
+{ #category : #tests }
 CS18NPropertiesImporterTest >> testExtractModelTwoValueAttribute [
 
 	| result |
@@ -47,6 +69,28 @@ CS18NPropertiesImporterTest >> testExtractModelTwoValueAttribute [
 	self assert: result second endPos equals: 19.
 	"No name because the name would be between the % and the last ] but we did not find example yet"
 	self assert: result second name equals: 'noname'.
+]
+
+{ #category : #tests }
+CS18NPropertiesImporterTest >> testExtractModelTwoValueNamedAttribute [
+
+	| result |
+	result := importer extractModelValueAttributes: (CS18NValue new
+			           name: 'Hello : {libelle} and {secondLibelle}';
+			           yourself).
+	self assert: result size equals: 2.
+	self assert: result anyOne class equals: CS18NValueVariable.
+	self assert: result anyOne startPos equals: 9.
+	self assert: result anyOne endPos equals: 17.
+	"No name because the name would be between the % and the last ] but we did not find example yet"
+	self assert: result anyOne name equals: 'libelle'.
+	
+
+	self assert: result second class equals: CS18NValueVariable.
+	self assert: result second startPos equals: 23.
+	self assert: result second endPos equals: 37.
+	"No name because the name would be between the % and the last ] but we did not find example yet"
+	self assert: result second name equals: 'secondLibelle'.
 ]
 
 { #category : #tests }
@@ -87,6 +131,21 @@ CS18NPropertiesImporterTest >> testExtractModelValueAttributesNoAttribute [
 			           name: 'Hello';
 			           yourself).
 	self assert: result size equals: 0
+]
+
+{ #category : #tests }
+CS18NPropertiesImporterTest >> testExtractModelValueNamedAttribute [
+
+	| result |
+	result := importer extractModelValueAttributes: (CS18NValue new
+			           name: 'Hello : {libelle}';
+			           yourself).
+	self assert: result size equals: 1.
+	self assert: result anyOne class equals: CS18NValueVariable.
+	self assert: result anyOne startPos equals: 9.
+	self assert: result anyOne endPos equals: 17.
+	"No name because the name would be between the % and the last ] but we did not find example yet"
+	self assert: result anyOne name equals: 'libelle'.
 ]
 
 { #category : #tests }
