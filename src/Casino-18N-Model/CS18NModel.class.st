@@ -16,3 +16,9 @@ CS18NModel class >> annotation [
 	<package: #'Casino-18N-Model'>
 	<generated>
 ]
+
+{ #category : #testing }
+CS18NModel class >> canBeImportedFromFile [
+	<generated>
+	^true
+]

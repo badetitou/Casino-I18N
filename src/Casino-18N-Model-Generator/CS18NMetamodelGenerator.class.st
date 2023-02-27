@@ -8,7 +8,8 @@ Class {
 		'value',
 		'namespace',
 		'containable',
-		'entity'
+		'entity',
+		'valueVariable'
 	],
 	#category : #'Casino-18N-Model-Generator'
 }
@@ -40,6 +41,7 @@ CS18NMetamodelGenerator >> defineClasses [
 	entry := builder newClassNamed: 'Entry' comment: 'An i18n entry'.
 	key := builder newClassNamed: 'Key' comment: 'An i18n entry''s key'.
 	value := builder newClassNamed: 'Value' comment: 'An i18n entry''s value'.
+	valueVariable := builder newClassNamed: 'ValueVariable' comment: 'A Variable inside an i18n entry''s value'.
 	namespace := builder newClassNamed: 'Namespace' comment: 'Include a group of key or other namespace'
 ]
 
@@ -53,11 +55,15 @@ CS18NMetamodelGenerator >> defineHierarchy [
 
 { #category : #definition }
 CS18NMetamodelGenerator >> defineProperties [
+
 	super defineProperties.
 	language property: #shortName type: #String.
 	key property: #name type: #String.
 	value property: #name type: #String.
 	namespace property: #name type: #String.
+	valueVariable property: #name type: #String.
+	valueVariable property: #startPos type: #Number.
+	valueVariable property: #endPont type: #Number
 ]
 
 { #category : #definition }
@@ -67,6 +73,7 @@ CS18NMetamodelGenerator >> defineRelations [
 	entry <>-* value.
 	language -* value.
 	namespace <>-* containable.
+	value -* valueVariable
 ]
 
 { #category : #definition }

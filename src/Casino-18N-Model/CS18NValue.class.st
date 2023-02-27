@@ -5,9 +5,10 @@ Class {
 	#name : #CS18NValue,
 	#superclass : #CS18NEntity,
 	#instVars : [
-		'#name => FMProperty',
 		'#entry => FMOne type: #CS18NEntry opposite: #values',
-		'#language => FMOne type: #CS18NLanguage opposite: #values'
+		'#language => FMOne type: #CS18NLanguage opposite: #values',
+		'#name => FMProperty',
+		'#valueVariables => FMMany type: #CS18NValueVariable opposite: #value'
 	],
 	#category : #'Casino-18N-Model-Entities'
 }
@@ -19,6 +20,12 @@ CS18NValue class >> annotation [
 	<package: #'Casino-18N-Model'>
 	<generated>
 	^self
+]
+
+{ #category : #adding }
+CS18NValue >> addValueVariable: anObject [
+	<generated>
+	^ self valueVariables add: anObject
 ]
 
 { #category : #accessing }
@@ -71,4 +78,20 @@ CS18NValue >> name [
 CS18NValue >> name: anObject [
 	<generated>
 	name := anObject
+]
+
+{ #category : #accessing }
+CS18NValue >> valueVariables [
+	"Relation named: #valueVariables type: #CS18NValueVariable opposite: #value"
+
+	<generated>
+	<derived>
+	^ valueVariables
+]
+
+{ #category : #accessing }
+CS18NValue >> valueVariables: anObject [
+
+	<generated>
+	valueVariables value: anObject
 ]
