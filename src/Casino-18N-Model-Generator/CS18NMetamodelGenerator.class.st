@@ -63,7 +63,7 @@ CS18NMetamodelGenerator >> defineProperties [
 	namespace property: #name type: #String.
 	valueVariable property: #name type: #String.
 	valueVariable property: #startPos type: #Number.
-	valueVariable property: #endPont type: #Number
+	valueVariable property: #endPos type: #Number
 ]
 
 { #category : #definition }

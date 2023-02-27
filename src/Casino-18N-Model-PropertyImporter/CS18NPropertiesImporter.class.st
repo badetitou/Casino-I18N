@@ -82,6 +82,21 @@ CS18NPropertiesImporter >> entryStrategy: anEntryStrategy [
 	entryStrategy importer: self
 ]
 
+{ #category : #'private - importing' }
+CS18NPropertiesImporter >> extractModelValueAttributes: aModelValue [
+
+	| attributes ranges |
+	attributes := OrderedCollection new.
+	ranges := aModelValue name allRangesOfSubstring: '[%]'.
+	ranges do: [ :range | 
+		attributes add: (CS18NValueVariable new
+				 startPos: range first;
+				 endPos: range last;
+				 name: 'noname';
+				 yourself) ].
+	^ attributes
+]
+
 { #category : #importing }
 CS18NPropertiesImporter >> importFile: aFileReference [
 
@@ -98,10 +113,14 @@ CS18NPropertiesImporter >> importFile: aFileReference [
 CS18NPropertiesImporter >> importString: aString [
 
 	(parser parse: aString) do: [ :keyValue | 
-		(entryStrategy entryForKey: keyValue key) addValue:
-			(model createValue
-				 name: keyValue value;
-				 language: currentLanguage) ]
+		| modelValue valueAttributes |
+		modelValue := model createValue
+			              name: keyValue value;
+			              language: currentLanguage.
+		valueAttributes := self extractModelValueAttributes: modelValue.
+		modelValue valueVariables addAll: valueAttributes.
+		model addAll: valueAttributes.
+		(entryStrategy entryForKey: keyValue key) addValue: modelValue ]
 ]
 
 { #category : #initialization }

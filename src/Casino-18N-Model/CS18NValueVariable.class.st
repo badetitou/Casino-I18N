@@ -5,9 +5,9 @@ Class {
 	#name : #CS18NValueVariable,
 	#superclass : #CS18NEntity,
 	#instVars : [
+		'#endPos => FMProperty',
 		'#name => FMProperty',
 		'#startPos => FMProperty',
-		'#endPont => FMProperty',
 		'#value => FMOne type: #CS18NValue opposite: #valueVariables'
 	],
 	#category : #'Casino-18N-Model-Entities'
@@ -23,17 +23,17 @@ CS18NValueVariable class >> annotation [
 ]
 
 { #category : #accessing }
-CS18NValueVariable >> endPont [
+CS18NValueVariable >> endPos [
 
-	<FMProperty: #endPont type: #Number>
+	<FMProperty: #endPos type: #Number>
 	<generated>
-	^ endPont
+	^ endPos
 ]
 
 { #category : #accessing }
-CS18NValueVariable >> endPont: anObject [
+CS18NValueVariable >> endPos: anObject [
 	<generated>
-	endPont := anObject
+	endPos := anObject
 ]
 
 { #category : #accessing }

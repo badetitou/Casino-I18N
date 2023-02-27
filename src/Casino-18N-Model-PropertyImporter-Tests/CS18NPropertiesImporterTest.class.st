@@ -27,7 +27,69 @@ CS18NPropertiesImporterTest >> setUp [
 	importer currentNamespace: importer model rootNamespace
 ]
 
-{ #category : #test }
+{ #category : #tests }
+CS18NPropertiesImporterTest >> testExtractModelTwoValueAttribute [
+
+	| result |
+	result := importer extractModelValueAttributes: (CS18NValue new
+			           name: 'Hello : [%] and [%]';
+			           yourself).
+	self assert: result size equals: 2.
+	self assert: result first class equals: CS18NValueVariable.
+	self assert: result first startPos equals: 9.
+	self assert: result first endPos equals: 11.
+	"No name because the name would be between the % and the last ] but we did not find example yet"
+	self assert: result anyOne name equals: 'noname'.
+	
+
+	self assert: result second class equals: CS18NValueVariable.
+	self assert: result second startPos equals: 17.
+	self assert: result second endPos equals: 19.
+	"No name because the name would be between the % and the last ] but we did not find example yet"
+	self assert: result second name equals: 'noname'.
+]
+
+{ #category : #tests }
+CS18NPropertiesImporterTest >> testExtractModelValueAttribute [
+
+	| result |
+	result := importer extractModelValueAttributes: (CS18NValue new
+			           name: 'Hello : [%]';
+			           yourself).
+	self assert: result size equals: 1.
+	self assert: result anyOne class equals: CS18NValueVariable.
+	self assert: result anyOne startPos equals: 9.
+	self assert: result anyOne endPos equals: 11.
+	"No name because the name would be between the % and the last ] but we did not find example yet"
+	self assert: result anyOne name equals: 'noname'.
+]
+
+{ #category : #tests }
+CS18NPropertiesImporterTest >> testExtractModelValueAttributes [
+
+	| result |
+	result := importer extractModelValueAttributes: (CS18NValue new
+			           name: 'Hello : [%]';
+			           yourself).
+	self assert: result size equals: 1.
+	self assert: result anyOne class equals: CS18NValueVariable.
+	self assert: result anyOne startPos equals: 9.
+	self assert: result anyOne endPos equals: 11.
+	"No name because the name would be between the % and the last ] but we did not find example yet"
+	self assert: result anyOne name equals: 'noname'.
+]
+
+{ #category : #tests }
+CS18NPropertiesImporterTest >> testExtractModelValueAttributesNoAttribute [
+
+	| result |
+	result := importer extractModelValueAttributes: (CS18NValue new
+			           name: 'Hello';
+			           yourself).
+	self assert: result size equals: 0
+]
+
+{ #category : #tests }
 CS18NPropertiesImporterTest >> testImportString [
 
 	importer importString: 'property=value'.
@@ -39,4 +101,21 @@ CS18NPropertiesImporterTest >> testImportString [
 		assert:
 		(i18nModel allWithType: CS18NEntry) anyOne values anyOne name
 		equals: 'value'
+]
+
+{ #category : #tests }
+CS18NPropertiesImporterTest >> testImportStringWithValueAttributes [
+
+	importer importString: 'property=value : [%]'.
+	self assert: (i18nModel allWithType: CS18NEntry) size equals: 1.
+	self
+		assert: (i18nModel allWithType: CS18NEntry) anyOne key name
+		equals: 'property'.
+	self
+		assert:
+		(i18nModel allWithType: CS18NEntry) anyOne values anyOne name
+		equals: 'value : [%]'.
+	self
+		assert: (i18nModel allWithType: CS18NValueVariable) size
+		equals: 1
 ]
