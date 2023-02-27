@@ -32,7 +32,13 @@ CS18NPropertiesExporter >> constructNamespace: aNamespace [
 { #category : #exporting }
 CS18NPropertiesExporter >> constructValueString: aCS18NValue [
 
-	^ aCS18NValue name copyReplaceAll: '[%]' with: '{{ noname }}'
+	| string |
+	string := aCS18NValue name copyReplaceAll: '[%]' with: '{{ noname }}'.
+	aCS18NValue valueVariables do: [ :valueVariable | 
+		valueVariable name = 'noname' ifFalse: [ 
+			string := '{{ ' , valueVariable name allButFirst allButLast , ' }}' 
+				          join: (string splitOn: valueVariable name) ] ].
+	^ string
 ]
 
 { #category : #exporting }
