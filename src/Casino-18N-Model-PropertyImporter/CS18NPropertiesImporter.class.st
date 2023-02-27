@@ -128,7 +128,7 @@ CS18NPropertiesImporter >> importString: aString [
 		valueAttributes := self extractModelValueAttributes: modelValue.
 		modelValue valueVariables addAll: valueAttributes.
 		model addAll: valueAttributes.
-		(entryStrategy entryForKey: keyValue key) addValue: modelValue ]
+		modelValue entry: (entryStrategy entryForKey: keyValue key) ]
 ]
 
 { #category : #initialization }

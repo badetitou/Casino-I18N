@@ -162,6 +162,16 @@ CS18NPropertiesImporterTest >> testImportString [
 		equals: 'value'
 ]
 
+{ #category : #'as yet unclassified' }
+CS18NPropertiesImporterTest >> testImportStringLanguage [
+
+	importer importString: 'property=value'.
+
+	self
+		assert: (i18nModel allWithType: CS18NValue) anyOne language
+		equals: (i18nModel allWithType: CS18NLanguage) anyOne
+]
+
 { #category : #tests }
 CS18NPropertiesImporterTest >> testImportStringWithValueAttributes [
 
