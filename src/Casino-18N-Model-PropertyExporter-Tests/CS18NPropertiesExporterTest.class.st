@@ -118,7 +118,7 @@ CS18NPropertiesExporterTest >> testExportValueWithNamedAttribute [
 		         entry: entry;
 		         yourself.
 	value addValueVariable: (CS18NValueVariable new
-			 name: '{label}';
+			 name: 'label';
 			 startPos: 7;
 			 endPos: 13;
 			 yourself).

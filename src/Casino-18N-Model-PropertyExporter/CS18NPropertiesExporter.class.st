@@ -34,10 +34,16 @@ CS18NPropertiesExporter >> constructValueString: aCS18NValue [
 
 	| string |
 	string := aCS18NValue name copyReplaceAll: '[%]' with: '{{ noname }}'.
-	aCS18NValue valueVariables do: [ :valueVariable | 
-		valueVariable name = 'noname' ifFalse: [ 
-			string := '{{ ' , valueVariable name allButFirst allButLast , ' }}' 
-				          join: (string splitOn: valueVariable name) ] ].
+
+	aCS18NValue valueVariables ifNotNil: [ 
+		| col |
+		col := aCS18NValue valueVariables select: [ :var | 
+			       var name ~= 'noname' ].
+		col ifNotEmpty: [ 
+			| dic |
+			dic := Dictionary new.
+			col do: [ :var | dic at: var name put: '{{ ' , var name , ' }}' ].
+			string := string format: dic ] ].
 	^ string
 ]
 

@@ -95,7 +95,7 @@ CS18NPropertiesImporter >> extractModelValueAttributes: aModelValue [
 				 name: 'noname';
 				 yourself) ].
 	rangesRegEx := aModelValue name allRangesOfRegexMatches: '{[^}]*}'.
-	rangesRegEx do: [ :range | 
+	rangesRegEx do: [ :range |
 		attributes add: (CS18NValueVariable new
 				 startPos: range first;
 				 endPos: range last;
