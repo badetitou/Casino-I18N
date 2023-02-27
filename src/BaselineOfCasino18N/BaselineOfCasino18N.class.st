@@ -37,6 +37,7 @@ BaselineOfCasino18N >> defineGroups: spec [
 		group: 'default'
 		with: #( 'Casino-18N-Model' 'Casino-18N-Model-Generator'
 			   'Casino-18N-Model-PropertyExporter'
+			   'Casino-18N-Model-PropertyExporter-Tests'
 			   'Casino-18N-Model-PropertyImporter'
 			   'Casino-18N-Model-PropertyImporter-Tests'
 			   'Casino-18N-Model-Tests' ).
@@ -56,18 +57,23 @@ BaselineOfCasino18N >> definePackages: spec [
 
 	spec
 		package: 'Casino-18N-Model';
-		package: 'Casino-18N-Model-Extension' with: [ spec requires: #( 'Casino-18N-Model' ) ];
-		package: 'Casino-18N-Model-Tests' with: [ spec requires: #( 'Casino-18N-Model-Extension' ) ];
+		package: 'Casino-18N-Model-Extension'
+		with: [ spec requires: #( 'Casino-18N-Model' ) ];
+		package: 'Casino-18N-Model-Tests'
+		with: [ spec requires: #( 'Casino-18N-Model-Extension' ) ];
 		package: 'Casino-18N-Model-Generator';
 		package: 'Casino-18N-Model-PropertyExporter'
 		with: [ spec requires: #( 'NeoJSON' ) ];
+		package: 'Casino-18N-Model-PropertyExporter-Tests'
+		with: [ spec requires: #( 'Casino-18N-Model-PropertyExporter' ) ];
 		package: 'Casino-18N-Model-PropertyImporter'
 		with: [ spec requires: #( 'PetitParser2' ) ];
 		package: 'Casino-18N-Model-PropertyImporter-Tests'
 		with: [ spec requires: #( 'Casino-18N-Model-PropertyImporter' ) ].
 	"Link with the main Casino Project"
 	spec
-		package: 'CasinoExtension-18N-Model'  with: [ spec requires: #( 'Casino-18N-Model' ) ];
+		package: 'CasinoExtension-18N-Model'
+		with: [ spec requires: #( 'Casino-18N-Model' ) ];
 		package: 'CasinoExtension-18N-Model-Exporter';
 		package: 'CasinoExtension-18N-Model-Generator';
 		package: 'CasinoExtension-18N-ModelTransformation'

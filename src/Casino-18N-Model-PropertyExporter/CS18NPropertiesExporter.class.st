@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'model',
 		'language',
-		'stream'
+		'stream',
+		'newLine'
 	],
 	#category : #'Casino-18N-Model-PropertyExporter'
 }
@@ -24,16 +25,19 @@ CS18NPropertiesExporter >> constructNamespace: aNamespace [
 						        ifOne: [ :value | value name ]
 						        ifNone: [ '' ]) ] ]
 		       as: SortedCollection.
+
 	^ dic asOrderedDictionary
 ]
 
 { #category : #exporting }
 CS18NPropertiesExporter >> export [
 
-	NeoJSONWriter new
-		on: stream;
-		prettyPrint: true;
-		nextPut: (self constructNamespace: model rootNamespace)
+	| writter |
+	writter := NeoJSONWriter new
+		           on: stream;
+		           prettyPrint: true.
+	self newLine ifNotNil: [ writter newLine: self newLine ].
+	writter nextPut: (self constructNamespace: model rootNamespace)
 ]
 
 { #category : #accessing }
@@ -58,6 +62,18 @@ CS18NPropertiesExporter >> model [
 CS18NPropertiesExporter >> model: anObject [
 
 	model := anObject
+]
+
+{ #category : #accessing }
+CS18NPropertiesExporter >> newLine [
+
+	^ newLine
+]
+
+{ #category : #accessing }
+CS18NPropertiesExporter >> newLine: anObject [
+
+	newLine := anObject
 ]
 
 { #category : #accessing }

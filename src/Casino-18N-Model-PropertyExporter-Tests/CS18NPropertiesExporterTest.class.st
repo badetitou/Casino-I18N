@@ -16,25 +16,46 @@ CS18NPropertiesExporterTest >> setUp [
 
 	super setUp.
 	model := CS18NModel new.
-	exporter := CS18NPropertiesExporter new model: model
+	exporter := CS18NPropertiesExporter new model: model.
+	exporter newLine: String cr
 ]
 
-{ #category : #tests }
-CS18NPropertiesExporterTest >> testConstructNamespace [
+{ #category : #running }
+CS18NPropertiesExporterTest >> testExportEmptyModel [
 
-	| result expected |
-	model ensureEntry: 'foo'.
-	result := exporter constructNamespace: model rootNamespace.
-	expected := { ('foo' -> '') } asOrderedDictionary.
-	self assert: result equals: expected.
+	| result |
+	result := String streamContents: [ :stream | exporter stream: stream; export ].
+	self assert: result equals: '{ }'
+]
 
-	(model entryForPath: 'bar.baz') addValue:
-		(model createValue name: 'Hi!').
-	model entryForPath: 'bar.bla.baz'.
-	result := exporter constructNamespace: model rootNamespace.
-	expected addAll: { ('bar' -> { 
-			 ('baz' -> 'Hi!').
-			 ('bla' -> { ('baz' -> '') } asOrderedDictionary) }
-			 asOrderedDictionary) }.
-	self assert: result equals: expected
+{ #category : #running }
+CS18NPropertiesExporterTest >> testExportSimpleModel [
+
+	| result entry language |
+	language := CS18NLanguage new
+		            shortName: #fr;
+		            yourself.
+	model add: language.
+
+	entry := CS18NEntry new
+		         key: (CS18NKey new
+				          name: 'hello';
+				          yourself);
+		         yourself.
+	(CS18NValue new
+		 name: 'value';
+		 language: language;
+		 entry: entry yourself).
+	model rootNamespace addContainable: entry.
+	model add: entry.
+	model add: entry key.
+	model addAll: entry values.
+	result := String streamContents: [ :stream | 
+		          exporter
+			          stream: stream;
+			          language: language;
+			          export ].
+	self assert: result equals: '{
+	"hello" : "value"
+}'
 ]
