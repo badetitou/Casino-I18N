@@ -33,7 +33,7 @@ CS18NPropertiesExporter >> constructNamespace: aNamespace [
 CS18NPropertiesExporter >> constructValueString: aCS18NValue [
 
 	| string |
-	string := aCS18NValue name copyReplaceAll: '[%]' with: '{{ noname }}'.
+	string := aCS18NValue name copyReplaceAll: '[%]' with: '{{noname}}'.
 
 	aCS18NValue valueVariables ifNotNil: [ 
 		| col |
@@ -42,7 +42,7 @@ CS18NPropertiesExporter >> constructValueString: aCS18NValue [
 		col ifNotEmpty: [ 
 			| dic |
 			dic := Dictionary new.
-			col do: [ :var | dic at: var name put: '{{ ' , var name , ' }}' ].
+			col do: [ :var | dic at: var name put: '{{' , var name , '}}' ].
 			string := string format: dic ] ].
 	^ string
 ]

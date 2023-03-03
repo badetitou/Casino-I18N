@@ -94,7 +94,7 @@ CS18NPropertiesExporterTest >> testExportValueWithAttribute [
 			          language: language;
 			          export ].
 	self assert: result equals: '{
-	"hello" : "value {{ noname }}"
+	"hello" : "value {{noname}}"
 }'
 ]
 
@@ -132,6 +132,6 @@ CS18NPropertiesExporterTest >> testExportValueWithNamedAttribute [
 			          language: language;
 			          export ].
 	self assert: result equals: '{
-	"hello" : "value {{ label }}"
+	"hello" : "value {{label}}"
 }'
 ]
