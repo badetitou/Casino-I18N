@@ -3,7 +3,7 @@
 [![CI](https://github.com/badetitou/Casino-I18N/actions/workflows/test.yml/badge.svg)](https://github.com/badetitou/Casino-I18N/actions/workflows/test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/badetitou/Casino-I18N/badge.svg?branch=master)](https://coveralls.io/github/badetitou/Casino-I18N?branch=master)
 
-This project aims to ease the migration of I18N properties files to one I18N json files.
+This project aims to facilitate the migration of I18N properties files to an I18N json file.
 
 The input looks like:
 
@@ -49,9 +49,9 @@ Metacello new
 
 ### Extraction
 
-The main class for the extraction is: `CS18NPropertiesImporter`.
-It extracts into a model a properties file.\
-Because the convention used to write those files might differ between projects, there are different strategies for extracting:
+The main extraction class is `CS18NPropertiesImporter`.
+It extracts a properties file into a model.\
+Since the convention used to produce these files may differ from project to project, there are different strategies for extracting:
 - a language from a file:
   - `CS18NFileNameLanguageStrategy` uses the file's name,
   - `CS18NFileNameSuffixLanguageStrategy` uses the suffix of the file's name after the last user-defined separator;
@@ -97,8 +97,8 @@ It is possible to extract the I18N of all files under a specific folder:
 
 ### Generation
 
-The main class for the json generation is: `CS18NPropertiesExporter`.
-Considering a I18N model, a target language (as string), and a write stream to the file, it generates the target JSON.
+The main class for generating the JSON file  is `CS18NPropertiesExporter`.
+Given an I18N model, a target language (as string), and a write stream to the file, it generates the target JSON.
 
 example:
 
@@ -115,11 +115,11 @@ example:
 
 ## Casino developers (export to Angular)
 
-This project comes with an integration to the Casino project to automatize the migration of I18N attributes.
+This project includes an integration with the Casino project to automate the migration of I18N attributes.
 
 ### Installation
 
-To install the project with its integration to Casino.
+To install the project with its integration with Casino:
 
 ```st
 Metacello new
@@ -133,7 +133,7 @@ Metacello new
 
 ### Usage
 
-Once a I18N model is extracted, one can convert a Casino model with the `CSNE18NModelTransformation` util.
+Once an I18N model has been extracted, a Casino model can be converted using the `CSNE18NModelTransformation` utility.
 
 ```st
 "Add information to Casino model"
